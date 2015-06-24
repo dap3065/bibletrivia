@@ -3,6 +3,7 @@
 use yii\bootstrap\Carousel;
 use yii\helpers\Html;
 
+
 $this->title = 'BIBLE TRIVIA NOW';
 ?>
 <div class="site-index">

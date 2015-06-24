@@ -3157,3 +3157,376 @@ $_SERVER = [
     'REQUEST_TIME_FLOAT' => 1429049054.283
     'REQUEST_TIME' => 1429049054
 ]
+2015-06-24 16:04:20 [127.0.0.1][3][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request: game/list' in /var/www/bibletrivia/vendor/yiisoft/yii2/base/Controller.php:122
+Stack trace:
+#0 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('list', Array)
+#1 /var/www/bibletrivia/vendor/yiisoft/yii2/web/Application.php(83): yii\base\Module->runAction('game/list', Array)
+#2 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 /var/www/bibletrivia/frontend/web/index.php(18): yii\base\Application->run()
+#4 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'Page not found.' in /var/www/bibletrivia/vendor/yiisoft/yii2/web/Application.php:95
+Stack trace:
+#0 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 /var/www/bibletrivia/frontend/web/index.php(18): yii\base\Application->run()
+#2 {main}
+2015-06-24 16:04:20 [127.0.0.1][3][-][info][application] $_COOKIE = [
+    'PHPSESSID' => 'f6m6n5stmbpt9blhei0sgabit6'
+    '_csrf' => '40242a5e094920f2a7287331b99ce2e427503f191c2e14ee6ec26e9155e8bc7ea:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"OJQgWUBqrOOWDXLdaM_vFb79SsrFpe_t\";}'
+    '_identity' => '6cfd1522b867f97ac78eba7f9d9a5df08af9d88346d5973a6ed494aab0ea7d38a:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[3,\"TecwEC1UkGcNdGjrvHnp19cFPFpCJLJ3\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 3
+    '__captcha/site/captcha' => 'kosadg'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.5'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_REFERER' => 'http://localhost/index.php/site/contact'
+    'HTTP_COOKIE' => 'PHPSESSID=f6m6n5stmbpt9blhei0sgabit6; _csrf=40242a5e094920f2a7287331b99ce2e427503f191c2e14ee6ec26e9155e8bc7ea%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22OJQgWUBqrOOWDXLdaM_vFb79SsrFpe_t%22%3B%7D; _identity=6cfd1522b867f97ac78eba7f9d9a5df08af9d88346d5973a6ed494aab0ea7d38a%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B3%2C%22TecwEC1UkGcNdGjrvHnp19cFPFpCJLJ3%22%2C2592000%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www/bibletrivia/frontend/web'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/bibletrivia/frontend/web'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/bibletrivia/frontend/web/index.php'
+    'REMOTE_PORT' => '35424'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/index.php/game/list'
+    'SCRIPT_NAME' => '/index.php'
+    'PATH_INFO' => '/game/list'
+    'PATH_TRANSLATED' => 'redirect:/index.php/list'
+    'PHP_SELF' => '/index.php/game/list'
+    'REQUEST_TIME_FLOAT' => 1435179860.54
+    'REQUEST_TIME' => 1435179860
+]
+2015-06-24 16:04:24 [127.0.0.1][3][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request: game/stats' in /var/www/bibletrivia/vendor/yiisoft/yii2/base/Controller.php:122
+Stack trace:
+#0 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('stats', Array)
+#1 /var/www/bibletrivia/vendor/yiisoft/yii2/web/Application.php(83): yii\base\Module->runAction('game/stats', Array)
+#2 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 /var/www/bibletrivia/frontend/web/index.php(18): yii\base\Application->run()
+#4 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'Page not found.' in /var/www/bibletrivia/vendor/yiisoft/yii2/web/Application.php:95
+Stack trace:
+#0 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 /var/www/bibletrivia/frontend/web/index.php(18): yii\base\Application->run()
+#2 {main}
+2015-06-24 16:04:24 [127.0.0.1][3][-][info][application] $_COOKIE = [
+    'PHPSESSID' => 'f6m6n5stmbpt9blhei0sgabit6'
+    '_csrf' => '40242a5e094920f2a7287331b99ce2e427503f191c2e14ee6ec26e9155e8bc7ea:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"OJQgWUBqrOOWDXLdaM_vFb79SsrFpe_t\";}'
+    '_identity' => '6cfd1522b867f97ac78eba7f9d9a5df08af9d88346d5973a6ed494aab0ea7d38a:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[3,\"TecwEC1UkGcNdGjrvHnp19cFPFpCJLJ3\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 3
+    '__captcha/site/captcha' => 'kosadg'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.5'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_REFERER' => 'http://localhost/index.php/game/list'
+    'HTTP_COOKIE' => 'PHPSESSID=f6m6n5stmbpt9blhei0sgabit6; _csrf=40242a5e094920f2a7287331b99ce2e427503f191c2e14ee6ec26e9155e8bc7ea%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22OJQgWUBqrOOWDXLdaM_vFb79SsrFpe_t%22%3B%7D; _identity=6cfd1522b867f97ac78eba7f9d9a5df08af9d88346d5973a6ed494aab0ea7d38a%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B3%2C%22TecwEC1UkGcNdGjrvHnp19cFPFpCJLJ3%22%2C2592000%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www/bibletrivia/frontend/web'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/bibletrivia/frontend/web'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/bibletrivia/frontend/web/index.php'
+    'REMOTE_PORT' => '35424'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/index.php/game/stats'
+    'SCRIPT_NAME' => '/index.php'
+    'PATH_INFO' => '/game/stats'
+    'PATH_TRANSLATED' => 'redirect:/index.php/stats'
+    'PHP_SELF' => '/index.php/game/stats'
+    'REQUEST_TIME_FLOAT' => 1435179864.473
+    'REQUEST_TIME' => 1435179864
+]
+2015-06-24 16:04:28 [127.0.0.1][3][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request: user/account' in /var/www/bibletrivia/vendor/yiisoft/yii2/base/Controller.php:122
+Stack trace:
+#0 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('account', Array)
+#1 /var/www/bibletrivia/vendor/yiisoft/yii2/web/Application.php(83): yii\base\Module->runAction('user/account', Array)
+#2 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 /var/www/bibletrivia/frontend/web/index.php(18): yii\base\Application->run()
+#4 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'Page not found.' in /var/www/bibletrivia/vendor/yiisoft/yii2/web/Application.php:95
+Stack trace:
+#0 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 /var/www/bibletrivia/frontend/web/index.php(18): yii\base\Application->run()
+#2 {main}
+2015-06-24 16:04:28 [127.0.0.1][3][-][info][application] $_COOKIE = [
+    'PHPSESSID' => 'f6m6n5stmbpt9blhei0sgabit6'
+    '_csrf' => '40242a5e094920f2a7287331b99ce2e427503f191c2e14ee6ec26e9155e8bc7ea:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"OJQgWUBqrOOWDXLdaM_vFb79SsrFpe_t\";}'
+    '_identity' => '6cfd1522b867f97ac78eba7f9d9a5df08af9d88346d5973a6ed494aab0ea7d38a:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[3,\"TecwEC1UkGcNdGjrvHnp19cFPFpCJLJ3\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 3
+    '__captcha/site/captcha' => 'kosadg'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.5'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_REFERER' => 'http://localhost/index.php/game/stats'
+    'HTTP_COOKIE' => 'PHPSESSID=f6m6n5stmbpt9blhei0sgabit6; _csrf=40242a5e094920f2a7287331b99ce2e427503f191c2e14ee6ec26e9155e8bc7ea%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22OJQgWUBqrOOWDXLdaM_vFb79SsrFpe_t%22%3B%7D; _identity=6cfd1522b867f97ac78eba7f9d9a5df08af9d88346d5973a6ed494aab0ea7d38a%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B3%2C%22TecwEC1UkGcNdGjrvHnp19cFPFpCJLJ3%22%2C2592000%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www/bibletrivia/frontend/web'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/bibletrivia/frontend/web'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/bibletrivia/frontend/web/index.php'
+    'REMOTE_PORT' => '35424'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/index.php/user/account'
+    'SCRIPT_NAME' => '/index.php'
+    'PATH_INFO' => '/user/account'
+    'PATH_TRANSLATED' => 'redirect:/index.php/account'
+    'PHP_SELF' => '/index.php/user/account'
+    'REQUEST_TIME_FLOAT' => 1435179868.059
+    'REQUEST_TIME' => 1435179868
+]
+2015-06-24 16:04:32 [127.0.0.1][3][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request: game/list' in /var/www/bibletrivia/vendor/yiisoft/yii2/base/Controller.php:122
+Stack trace:
+#0 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('list', Array)
+#1 /var/www/bibletrivia/vendor/yiisoft/yii2/web/Application.php(83): yii\base\Module->runAction('game/list', Array)
+#2 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 /var/www/bibletrivia/frontend/web/index.php(18): yii\base\Application->run()
+#4 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'Page not found.' in /var/www/bibletrivia/vendor/yiisoft/yii2/web/Application.php:95
+Stack trace:
+#0 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 /var/www/bibletrivia/frontend/web/index.php(18): yii\base\Application->run()
+#2 {main}
+2015-06-24 16:04:32 [127.0.0.1][3][-][info][application] $_COOKIE = [
+    'PHPSESSID' => 'f6m6n5stmbpt9blhei0sgabit6'
+    '_csrf' => '40242a5e094920f2a7287331b99ce2e427503f191c2e14ee6ec26e9155e8bc7ea:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"OJQgWUBqrOOWDXLdaM_vFb79SsrFpe_t\";}'
+    '_identity' => '6cfd1522b867f97ac78eba7f9d9a5df08af9d88346d5973a6ed494aab0ea7d38a:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[3,\"TecwEC1UkGcNdGjrvHnp19cFPFpCJLJ3\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 3
+    '__captcha/site/captcha' => 'kosadg'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.5'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_REFERER' => 'http://localhost/index.php/user/account'
+    'HTTP_COOKIE' => 'PHPSESSID=f6m6n5stmbpt9blhei0sgabit6; _csrf=40242a5e094920f2a7287331b99ce2e427503f191c2e14ee6ec26e9155e8bc7ea%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22OJQgWUBqrOOWDXLdaM_vFb79SsrFpe_t%22%3B%7D; _identity=6cfd1522b867f97ac78eba7f9d9a5df08af9d88346d5973a6ed494aab0ea7d38a%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B3%2C%22TecwEC1UkGcNdGjrvHnp19cFPFpCJLJ3%22%2C2592000%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www/bibletrivia/frontend/web'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/bibletrivia/frontend/web'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/bibletrivia/frontend/web/index.php'
+    'REMOTE_PORT' => '35424'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/index.php/game/list'
+    'SCRIPT_NAME' => '/index.php'
+    'PATH_INFO' => '/game/list'
+    'PATH_TRANSLATED' => 'redirect:/index.php/list'
+    'PHP_SELF' => '/index.php/game/list'
+    'REQUEST_TIME_FLOAT' => 1435179872.218
+    'REQUEST_TIME' => 1435179872
+]
+2015-06-24 16:12:40 [127.0.0.1][3][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request: user/account' in /var/www/bibletrivia/vendor/yiisoft/yii2/base/Controller.php:122
+Stack trace:
+#0 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('account', Array)
+#1 /var/www/bibletrivia/vendor/yiisoft/yii2/web/Application.php(83): yii\base\Module->runAction('user/account', Array)
+#2 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 /var/www/bibletrivia/frontend/web/index.php(18): yii\base\Application->run()
+#4 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'Page not found.' in /var/www/bibletrivia/vendor/yiisoft/yii2/web/Application.php:95
+Stack trace:
+#0 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 /var/www/bibletrivia/frontend/web/index.php(18): yii\base\Application->run()
+#2 {main}
+2015-06-24 16:12:40 [127.0.0.1][3][-][info][application] $_COOKIE = [
+    'PHPSESSID' => 'f6m6n5stmbpt9blhei0sgabit6'
+    '_csrf' => '40242a5e094920f2a7287331b99ce2e427503f191c2e14ee6ec26e9155e8bc7ea:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"OJQgWUBqrOOWDXLdaM_vFb79SsrFpe_t\";}'
+    '_identity' => '6cfd1522b867f97ac78eba7f9d9a5df08af9d88346d5973a6ed494aab0ea7d38a:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[3,\"TecwEC1UkGcNdGjrvHnp19cFPFpCJLJ3\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 3
+    '__captcha/site/captcha' => 'kosadg'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.5'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_REFERER' => 'http://localhost/index.php/game/stats'
+    'HTTP_COOKIE' => 'PHPSESSID=f6m6n5stmbpt9blhei0sgabit6; _csrf=40242a5e094920f2a7287331b99ce2e427503f191c2e14ee6ec26e9155e8bc7ea%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22OJQgWUBqrOOWDXLdaM_vFb79SsrFpe_t%22%3B%7D; _identity=6cfd1522b867f97ac78eba7f9d9a5df08af9d88346d5973a6ed494aab0ea7d38a%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B3%2C%22TecwEC1UkGcNdGjrvHnp19cFPFpCJLJ3%22%2C2592000%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www/bibletrivia/frontend/web'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/bibletrivia/frontend/web'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/bibletrivia/frontend/web/index.php'
+    'REMOTE_PORT' => '35428'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/index.php/user/account'
+    'SCRIPT_NAME' => '/index.php'
+    'PATH_INFO' => '/user/account'
+    'PATH_TRANSLATED' => 'redirect:/index.php/account'
+    'PHP_SELF' => '/index.php/user/account'
+    'REQUEST_TIME_FLOAT' => 1435180360.702
+    'REQUEST_TIME' => 1435180360
+]
+2015-06-24 17:01:41 [127.0.0.1][3][-][error][yii\base\ErrorException:8] exception 'yii\base\ErrorException' with message 'Undefined variable: question' in /var/www/bibletrivia/frontend/views/game/list.php:11
+Stack trace:
+#0 /var/www/bibletrivia/vendor/yiisoft/yii2/base/View.php(247): yii\base\View->renderPhpFile()
+#1 /var/www/bibletrivia/vendor/yiisoft/yii2/base/View.php(149): yii\base\View->renderFile()
+#2 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Controller.php(367): yii\base\View->render()
+#3 /var/www/bibletrivia/frontend/controllers/GameController.php(75): yii\base\Controller->render()
+#4 /var/www/bibletrivia/vendor/yiisoft/yii2/base/InlineAction.php(55): frontend\controllers\GameController->actionList()
+#5 /var/www/bibletrivia/vendor/yiisoft/yii2/base/InlineAction.php(55): ::call_user_func_array:{/var/www/bibletrivia/vendor/yiisoft/yii2/base/InlineAction.php:55}()
+#6 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams()
+#7 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction()
+#8 /var/www/bibletrivia/vendor/yiisoft/yii2/web/Application.php(83): yii\base\Module->runAction()
+#9 /var/www/bibletrivia/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest()
+#10 /var/www/bibletrivia/frontend/web/index.php(18): yii\base\Application->run()
+#11 {main}
+2015-06-24 17:01:40 [127.0.0.1][3][-][info][application] $_COOKIE = [
+    'PHPSESSID' => 'f6m6n5stmbpt9blhei0sgabit6'
+    '_csrf' => '40242a5e094920f2a7287331b99ce2e427503f191c2e14ee6ec26e9155e8bc7ea:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"OJQgWUBqrOOWDXLdaM_vFb79SsrFpe_t\";}'
+    '_identity' => '6cfd1522b867f97ac78eba7f9d9a5df08af9d88346d5973a6ed494aab0ea7d38a:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[3,\"TecwEC1UkGcNdGjrvHnp19cFPFpCJLJ3\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 3
+    '__captcha/site/captcha' => 'kosadg'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.5'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_REFERER' => 'http://localhost/index.php/site/index'
+    'HTTP_COOKIE' => 'PHPSESSID=f6m6n5stmbpt9blhei0sgabit6; _csrf=40242a5e094920f2a7287331b99ce2e427503f191c2e14ee6ec26e9155e8bc7ea%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22OJQgWUBqrOOWDXLdaM_vFb79SsrFpe_t%22%3B%7D; _identity=6cfd1522b867f97ac78eba7f9d9a5df08af9d88346d5973a6ed494aab0ea7d38a%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B3%2C%22TecwEC1UkGcNdGjrvHnp19cFPFpCJLJ3%22%2C2592000%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www/bibletrivia/frontend/web'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/bibletrivia/frontend/web'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/bibletrivia/frontend/web/index.php'
+    'REMOTE_PORT' => '36143'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/index.php/game/list'
+    'SCRIPT_NAME' => '/index.php'
+    'PATH_INFO' => '/game/list'
+    'PATH_TRANSLATED' => 'redirect:/index.php/list'
+    'PHP_SELF' => '/index.php/game/list'
+    'REQUEST_TIME_FLOAT' => 1435183300.471
+    'REQUEST_TIME' => 1435183300
+]

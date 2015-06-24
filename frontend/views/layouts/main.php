@@ -26,7 +26,7 @@ AppAsset::register($this);
     <div class="wrap">
         <?php
             NavBar::begin([
-                'brandLabel' => 'Website Solutions Now',
+                'brandLabel' => 'Bible Trivia Now',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
@@ -41,6 +41,9 @@ AppAsset::register($this);
                 $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
                 $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
             } else {
+                $menuItems[] = ['label' => 'Current Games', 'url' => ['/game/list']];
+                $menuItems[] = ['label' => 'Stats', 'url' => ['/game/stats']];
+                $menuItems[] = ['label' => 'Account', 'url' => ['/user/account']];
                 $menuItems[] = [
                     'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
                     'url' => ['/site/logout'],
@@ -65,7 +68,7 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-        <p class="pull-left">&copy; Website Solutions Now <?= date('Y') ?></p>
+        <p class="pull-left">&copy; Bible Trivia Now <?= date('Y') ?></p>
         <p class="pull-right">By David Paul</p>
         </div>
     </footer>
