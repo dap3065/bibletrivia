@@ -18,22 +18,22 @@ echo Carousel::widget([
 //        ['content' => Html::img('images/mobile.jpg')],
         // the item contains both the image and the caption
         [
-            'content' => Html::img('/images/mobile.jpg'),
+            'content' => Html::img('/images/biblegrab.jpg'),
             'caption' => '<h4>Play on your phone!</h4><p>Try our mobile app!</p>',
             'options' => ['data-interval'=>4000],
         ],
         [
-            'content' => Html::img('/images/click.jpg'),
+            'content' => Html::img('/images/bibleopen.jpeg'),
             'caption' => '<h4>Play on your tablet!</h4><p>Get the app now!</p>',
             'options' => ['data-interval'=>4000],
         ],
         [
-            'content' => Html::img('/images/formats.jpg'),
+            'content' => Html::img('/images/trivia.jpg'),
             'caption' => '<h4>Test your knowledge!</h4><p>See where you rank!</p>',
             'options' => ['data-interval'=>4000],
         ],
         [
-            'content' => Html::img('/images/develop.jpg'),
+            'content' => Html::img('/images/biblewb.jpeg'),
             'caption' => '<h4>Play against family and friends!</h4><p>Encourage the word of God with others!</p>',
             'options' => ['data-interval'=>4000],
         ],
