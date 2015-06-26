@@ -55,8 +55,8 @@ interface Web
     public function dontSee($text, $selector = null);
 
     /**
-     * Submits the given form on the page, optionally with the given form values.
-     * Give the form fields values as an array.
+     * Submits the given form on the page, optionally with the given form
+     * values.  Give the form fields values as an array.
      *
      * Skipped fields will be filled by their values from the page.
      * You don't need to click the 'Submit' button afterwards.
@@ -71,9 +71,15 @@ interface Web
      *
      * ``` php
      * <?php
-     * $I->submitForm('#login', array('login' => 'davert', 'password' => '123456'));
+     * $I->submitForm('#login', [
+     *     'login' => 'davert',
+     *     'password' => '123456'
+     * ]);
      * // or
-     * $I->submitForm('#login', array('login' => 'davert', 'password' => '123456'), 'submitButtonName');
+     * $I->submitForm('#login', [
+     *     'login' => 'davert',
+     *     'password' => '123456'
+     * ], 'submitButtonName');
      *
      * ```
      *
@@ -81,10 +87,17 @@ interface Web
      *
      * ``` html
      * <form action="/sign_up">
-     *     Login: <input type="text" name="user[login]" /><br/>
-     *     Password: <input type="password" name="user[password]" /><br/>
-     *     Do you agree to out terms? <input type="checkbox" name="user[agree]" /><br/>
-     *     Select pricing plan <select name="plan"><option value="1">Free</option><option value="2" selected="selected">Paid</option></select>
+     *     Login:
+     *     <input type="text" name="user[login]" /><br/>
+     *     Password:
+     *     <input type="password" name="user[password]" /><br/>
+     *     Do you agree to out terms?
+     *     <input type="checkbox" name="user[agree]" /><br/>
+     *     Select pricing plan:
+     *     <select name="plan">
+     *         <option value="1">Free</option>
+     *         <option value="2" selected="selected">Paid</option>
+     *     </select>
      *     <input type="submit" name="submitButton" value="Submit" />
      * </form>
      * ```
@@ -93,24 +106,111 @@ interface Web
      *
      * ``` php
      * <?php
-     * $I->submitForm('#userForm', array('user' => array('login' => 'Davert', 'password' => '123456', 'agree' => true)), 'submitButton');
-     *
+     * $I->submitForm(
+     *     '#userForm',
+     *     [
+     *         'user' => [
+     *             'login' => 'Davert',
+     *             'password' => '123456',
+     *             'agree' => true
+     *         ]
+     *     ],
+     *     'submitButton'
+     * );
      * ```
-     * Note that "2" will be the submitted value for the "plan" field, as it is the selected option.
+     * Note that "2" will be the submitted value for the "plan" field, as it is
+     * the selected option.
      * 
-     * You can also emulate a JavaScript submission by not specifying any buttons in the third parameter to submitForm.
+     * You can also emulate a JavaScript submission by not specifying any
+     * buttons in the third parameter to submitForm.
      * 
      * ```php
      * <?php
-     * $I->submitForm('#userForm', array('user' => array('login' => 'Davert', 'password' => '123456', 'agree' => true)));
+     * $I->submitForm(
+     *     '#userForm',
+     *     [
+     *         'user' => [
+     *             'login' => 'Davert',
+     *             'password' => '123456',
+     *             'agree' => true
+     *         ]
+     *     ]
+     * );
+     * ```
      * 
+     * Pair this with seeInFormFields for quick testing magic.
+     * 
+     * ``` php
+     * <?php
+     * $form = [
+     *      'field1' => 'value',
+     *      'field2' => 'another value',
+     *      'checkbox1' => true,
+     *      // ...
+     * ];
+     * $I->submitForm('//form[@id=my-form]', $form, 'submitButton');
+     * // $I->amOnPage('/path/to/form-page') may be needed
+     * $I->seeInFormFields('//form[@id=my-form]', $form);
+     * ?>
      * ```
      *
+     * Parameter values can be set to arrays for multiple input fields
+     * of the same name, or multi-select combo boxes.  For checkboxes,
+     * either the string value can be used, or boolean values which will
+     * be replaced by the checkbox's value in the DOM.
+     *
+     * ``` php
+     * <?php
+     * $I->submitForm('#my-form', [
+     *      'field1' => 'value',
+     *      'checkbox' => [
+     *          'value of first checkbox',
+     *          'value of second checkbox,
+     *      ],
+     *      'otherCheckboxes' => [
+     *          true,
+     *          false,
+     *          false
+     *      ],
+     *      'multiselect' => [
+     *          'first option value',
+     *          'second option value'
+     *      ]
+     * ]);
+     * ?>
+     * ```
+     *
+     * Mixing string and boolean values for a checkbox's value is not supported
+     * and may produce unexpected results.
+     * 
+     * Field names ending in "[]" must be passed without the trailing square 
+     * bracket characters, and must contain an array for its value.  This allows
+     * submitting multiple values with the same name, consider:
+     * 
+     * ```php
+     * $I->submitForm('#my-form', [
+     *     'field[]' => 'value',
+     *     'field[]' => 'another value', // 'field[]' is already a defined key
+     * ]);
+     * ```
+     * 
+     * The solution is to pass an array value:
+     * 
+     * ```php
+     * // this way both values are submitted
+     * $I->submitForm('#my-form', [
+     *     'field' => [
+     *         'value',
+     *         'another value',
+     *     ]
+     * ]);
+     * ```
+     * 
      * @param $selector
      * @param $params
      * @param $button
      */
-    public function submitForm($selector, $params, $button = null);
+    public function submitForm($selector, array $params, $button = null);
 
     /**
      * Perform a click on a link or a button, given by a locator.
@@ -350,6 +450,112 @@ interface Web
      * @param $value
      */
     public function dontSeeInField($field, $value);
+
+    /**
+     * Checks if the array of form parameters (name => value) are set on the form matched with the
+     * passed selector.
+     * 
+     * ``` php
+     * <?php
+     * $I->seeInFormFields('form[name=myform]', [
+     *      'input1' => 'value',
+     *      'input2' => 'other value',
+     * ]);
+     * ?>
+     * ```
+     * 
+     * For multi-select elements, or to check values of multiple elements with the same name, an
+     * array may be passed:
+     * 
+     * ``` php
+     * <?php
+     * $I->seeInFormFields('.form-class', [
+     *      'multiselect' => [
+     *          'value1',
+     *          'value2',
+     *      ],
+     *      'checkbox[]' => [
+     *          'a checked value',
+     *          'another checked value',
+     *      ],
+     * ]);
+     * ?>
+     * ```
+     *
+     * Additionally, checkbox values can be checked with a boolean.
+     * 
+     * ``` php
+     * <?php
+     * $I->seeInFormFields('#form-id', [
+     *      'checkbox1' => true,        // passes if checked
+     *      'checkbox2' => false,       // passes if unchecked
+     * ]);
+     * ?>
+     * ```
+     * 
+     * Pair this with submitForm for quick testing magic.
+     * 
+     * ``` php
+     * <?php
+     * $form = [
+     *      'field1' => 'value',
+     *      'field2' => 'another value',
+     *      'checkbox1' => true,
+     *      // ...
+     * ];
+     * $I->submitForm('//form[@id=my-form]', $form, 'submitButton');
+     * // $I->amOnPage('/path/to/form-page') may be needed
+     * $I->seeInFormFields('//form[@id=my-form]', $form);
+     * ?>
+     * ```
+     * 
+     * @param $formSelector
+     * @param $params
+     */
+    public function seeInFormFields($formSelector, array $params);
+
+    /**
+     * Checks if the array of form parameters (name => value) are not set on the form matched with
+     * the passed selector.
+     * 
+     * ``` php
+     * <?php
+     * $I->dontSeeInFormFields('form[name=myform]', [
+     *      'input1' => 'non-existent value',
+     *      'input2' => 'other non-existent value',
+     * ]);
+     * ?>
+     * ```
+     * 
+     * To check that an element hasn't been assigned any one of many values, an array can be passed
+     * as the value:
+     * 
+     * ``` php
+     * <?php
+     * $I->dontSeeInFormFields('.form-class', [
+     *      'fieldName' => [
+     *          'This value shouldn\'t be set',
+     *          'And this value shouldn\'t be set',
+     *      ],
+     * ]);
+     * ?>
+     * ```
+     *
+     * Additionally, checkbox values can be checked with a boolean.
+     * 
+     * ``` php
+     * <?php
+     * $I->dontSeeInFormFields('#form-id', [
+     *      'checkbox1' => true,        // fails if checked
+     *      'checkbox2' => false,       // fails if unchecked
+     * ]);
+     * ?>
+     * ```
+     * 
+     * @param $formSelector
+     * @param $params
+     */
+    public function dontSeeInFormFields($formSelector, array $params);
 
     /**
      * Selects an option in a select tag or in radio button group.
@@ -601,6 +807,7 @@ interface Web
 
     /**
      * Checks that a cookie with the given name is set.
+     * You can set additional cookie params like `domain`, `path` as array passed in last argument.
      *
      * ``` php
      * <?php
@@ -609,22 +816,25 @@ interface Web
      * ```
      *
      * @param $cookie
-     *
+     * @param array $params
      * @return mixed
      */
-    public function seeCookie($cookie);
+    public function seeCookie($cookie, array $params = []);
 
     /**
      * Checks that there isn't a cookie with the given name.
+     * You can set additional cookie params like `domain`, `path` as array passed in last argument.
      *
      * @param $cookie
      *
+     * @param array $params
      * @return mixed
      */
-    public function dontSeeCookie($cookie);
+    public function dontSeeCookie($cookie, array $params = []);
 
     /**
      * Sets a cookie with the given name and value.
+     * You can set additional cookie params like `domain`, `path`, `expire`, `secure` in array passed as last argument.
      *
      * ``` php
      * <?php
@@ -632,28 +842,35 @@ interface Web
      * ?>
      * ```
      *
-     * @param $cookie
-     * @param $value
+     * @param $name
+     * @param $val
+     * @param array $params
+     * @internal param $cookie
+     * @internal param $value
      *
      * @return mixed
      */
-    public function setCookie($cookie, $value);
+    public function setCookie($name, $val, array $params = []);
 
     /**
      * Unsets cookie with the given name.
+     * You can set additional cookie params like `domain`, `path` in array passed as last argument.
      *
      * @param $cookie
      *
+     * @param array $params
      * @return mixed
      */
-    public function resetCookie($cookie);
+    public function resetCookie($cookie, array $params = []);
 
     /**
      * Grabs a cookie value.
+     * You can set additional cookie params like `domain`, `path` in array passed as last argument.
      *
      * @param $cookie
      *
+     * @param array $params
      * @return mixed
      */
-    public function grabCookie($cookie);
+    public function grabCookie($cookie, array $params = []);
 }

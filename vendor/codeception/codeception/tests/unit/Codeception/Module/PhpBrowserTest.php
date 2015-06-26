@@ -126,6 +126,21 @@ class PhpBrowserTest extends TestsForBrowsers
         $this->assertContains('test@gmail.com', $params);
     }
 
+    public function testRelativeRedirect()
+    {
+        // test relative redirects where the effective request URI is in a
+        // subdirectory
+        $this->module->amOnPage('/relative/redirect');
+        $this->module->seeResponseCodeIs(200);
+        $this->module->seeCurrentUrlEquals('/relative/info');
+
+        // also, test relative redirects where the effective request URI is not
+        // in a subdirectory
+        $this->module->amOnPage('/relative_redirect');
+        $this->module->seeResponseCodeIs(200);
+        $this->module->seeCurrentUrlEquals('/info');
+    }
+
     public function testSetCookieByHeader()
     {
         $this->module->amOnPage('/cookies2');
@@ -167,9 +182,9 @@ class PhpBrowserTest extends TestsForBrowsers
 
     public function testHeadersByConfig()
     {
-        $this->mockResponse();
         $this->module->_setConfig(['headers' => ['xxx' => 'yyyy']]);
         $this->module->_initialize();
+        $this->mockResponse();
         $this->module->amOnPage('/form1');
         $this->assertArrayHasKey('xxx', $this->module->guzzle->getDefaultOption('headers'));
         $this->assertEquals('yyyy', $this->module->guzzle->getDefaultOption('headers/xxx'));
@@ -182,12 +197,27 @@ class PhpBrowserTest extends TestsForBrowsers
         $this->assertTrue($this->history->getLastRequest()->hasHeader('xxx'));
     }
 
+    public function testDeleteHeaders()
+    {
+        $this->module->setHeader('xxx', 'yyyy');
+        $this->module->deleteHeader('xxx');
+        $this->module->amOnPage('/');
+        $this->assertFalse($this->history->getLastRequest()->hasHeader('xxx'));
+    }
+
+    public function testDeleteHeadersByEmptyValue()
+    {
+        $this->module->setHeader('xxx', 'yyyy');
+        $this->module->setHeader('xxx', '');
+        $this->module->amOnPage('/');
+        $this->assertFalse($this->history->getLastRequest()->hasHeader('xxx'));
+    }
+
     public function testCurlOptions()
     {
         $this->module->_setConfig(array('url' => 'http://google.com', 'curl' => array('CURLOPT_NOBODY' => true)));
         $this->module->_initialize();
         $this->assertTrue($this->module->guzzle->getDefaultOption('config/curl/'.CURLOPT_NOBODY));
-
     }
 
     public function testHttpAuth()
@@ -249,5 +279,39 @@ class PhpBrowserTest extends TestsForBrowsers
         $this->module->attachFile('foo[bar]', 'app/avatar.jpg');
         $this->module->click('Submit');
     }
+    
+    public function testDoubleSlash()
+    {
+        $I = $this->module;
+        $I->amOnPage('/register');
+        $I->submitForm('form', array('test' => 'test'));
+        $formUrl = $this->module->client->getHistory()->current()->getUri();
+        $formPath = parse_url($formUrl)['path'];
+        $this->assertEquals($formPath, '/register');
+    }
 
+    public function testFillFieldWithoutPage()
+    {
+        $this->setExpectedException("\\Codeception\\Exception\\TestRuntime");
+        $this->module->fillField('#name', 'Nothing special');
+    }
+    
+    public function testArrayFieldSubmitForm()
+    {
+        $this->module->amOnPage('/form/example17');
+        $this->module->submitForm(
+            'form',
+            [
+                'FooBar' => ['bar' => 'booze'],
+                'Food' => [
+                    'beer' => [
+                        'yum' => ['yeah' => 'crunked']
+                    ]
+                ]
+            ]
+        );
+        $data = data::get('form');
+        $this->assertEquals('booze', $data['FooBar']['bar']);
+        $this->assertEquals('crunked', $data['Food']['beer']['yum']['yeah']);
+    }
 }

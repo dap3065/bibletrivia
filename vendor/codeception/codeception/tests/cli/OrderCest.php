@@ -20,13 +20,21 @@ class OrderCest
         $I->seeFileContentsEqual("BIB([STF])");
     }
 
+    public function checkForCanCantFails(CliGuy $I)
+    {
+        $I->amInPath('tests/data/sandbox');
+        $I->executeCommand('run order CanCantFailCept.php --no-exit');
+        $I->seeFileFound('order.txt','tests/_log');
+        $I->expect('global bootstrap, initialization, beforeSuite, before, bootstrap, test, fail, fail, test, after, afterSuite');
+        $I->seeFileContentsEqual("BIB([STFFT])");
+    }
 
     public function checkSimpleFiles(CliGuy $I)
     {
         $I->amInPath('tests/data/sandbox');
         $I->executeCommand('run order --no-exit --group simple');
         $I->seeFileFound('order.txt','tests/_log');
-        $I->seeFileContentsEqual("BIB({{{[ST][STF][ST])}}}");
+        $I->seeFileContentsEqual("BIB({{{[ST][STFFT][STF][ST])}}}");
     }
 
     public function checkCestOrder(CliGuy $I)
@@ -35,6 +43,14 @@ class OrderCest
         $I->executeCommand('run tests/order/ReorderCest.php --no-exit');
         $I->seeFileFound('order.txt','tests/_log');
         $I->seeFileContentsEqual("BIB([0123456])");
+    }
+
+    public function checkFailingCestOrder(CliGuy $I)
+    {
+        $I->amInPath('tests/data/sandbox');
+        $I->executeCommand('run tests/order/FailedCest.php --no-exit');
+        $I->seeFileFound('order.txt','tests/_log');
+        $I->seeFileContentsEqual("BIB([a%F])");
     }
 
     public function checkCodeceptionTest(CliGuy $I)

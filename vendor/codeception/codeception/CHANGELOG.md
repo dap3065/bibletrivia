@@ -1,5 +1,142 @@
 # Changelog
 
+#### 2.0.15
+
+* [Phalcon1] Fixed getting has more than one field by @sergeyklay #2010.
+* [PhpBrowser][Frameworks] Compute relative URIs against the effective request URI when there is a redirect. #2058 #2057
+* [PhpBrowser] Fixed Guzzle Connector headers by @valeriyaslovikovskaya #2028
+* [Symfony2] kernel is created for every test by @quaninte #2020
+* [WebDriver] Added WebDriver init settings `connection_timeout` and `request_timeout` by @n8whnp #2065
+* [MongoDb] added ability to change the database by @clarkeash #2015
+* [Doctrine2] Fixed issues after first request is made #2025 @AlexStansfield
+* [REST] Improved JsonArray to compare repeated values correctly by @Naktibalda #2070
+* [MongoDb] Remove not necessary config fields `user` and `password` by @nicklasos
+* `Stub::construct` can be used to set private/protected properties by @Naktibalda #2082
+* Fixed @before and @after hooks in Cest. _before method was executed on each call of method specified in @before annotation *2015-06-15*
+* [Laravel5] Fix for domains in `route()` helper. See #2000. *2015-06-04*
+* [REST] Fixed sending `JsonSerializable` object on POST by @Naktibalda and @andersonamuller. See #1988 #1994
+* [MongoDb] escaped filename shell argument for loading MongoDB by @christoph-hautzinger. #1998 *2015-06-03*
+* [Lumen] **Module added** by @janhenkgerritsen
+
+#### 2.0.14
+
+* Improved output *2015-05-22*
+  * data providers print simplified
+  * output respects console size with `tput` and tries to fit area
+  * non-interactive environments for `tput` are ignored
+* [Frameworks][PhpBrowser][Symfony2] Fields are passed as PHP-array on form submission the same way as `Symfony\Component\DomCrawler\Form->getPhpValues()` does. Fixes fails of Symfony form tests  *2015-05-22*
+* [Laravel4] Fixed bug with filters. See #1810. *2015-05-21*
+* [PhpBrowser][Frameworks] Fixed working associative array form fields (like `FooBar[bar]`). Fixes regression #1923 by @davertmik and @zbateson.
+* [PhpBrowser][Frameworks] Fixed cloning form nodes Codeception\Lib\InnerBrowser::getFormFromCrawler(): ID XXX already defined *2015-05-13*
+* [Laravel4] [Laravel5] Improved error message for `amOnRoute` and `amOnAction` methods if route or action does not exist *2015-05-04*
+* [Laravel4] Fixed issue with session configuration *2015-05-01*
+* [Laravel4] Partial rewrite of module *2015-05-01*
+  * Added `getApplication()` method
+  * Added `seeFormHasErrors()`, `seeFormErrorMessages(array $bindings)` and `seeFormErrorMessage($key, $errorMessage)` methods
+  * Deprecated `seeSessionHasErrors()` and `seeSessionErrorMessage(array $bindings)` methods.
+* fixed stderr output messages in PHPStorm console *2015-04-26*
+* Allow following symlinks when searching for tests by @nechutny
+* Fixed `g:scenarios --single-file` missing linebreaks between scenarios by @Zifius Parially fixes #1866
+* [Frameworks][PhpBrowser] Fixed errors like `[ErrorException] Array to string conversion` when using strict locators. Fix by @neochief #1881
+* [Frameworks][PhpBrowser] Fix for URLs with query parameters not properly constructed for GET form submissions by @zbateson Fixes #1891
+* [Facebook] Updated Facebook SDK to 4.0 by @enginvardar. See #1896.
+* [DB] Quote table name in `Db::getPrimaryKeyColumn` and `Db::deleteQueryMethods` by @Naktibalda. See #1912
+* [Silex] Can be used for API functional testing. Improvement by @arduanov See #1945
+* [Doctrine2] Added new config option `symfony_em_service` to specify service name for Doctrine entity manager in Symfony DIC by @danieltuwien #1915
+* [Db] Reversed order of removing records with foreign keys created by `haveInDatabase`. Fixes #1942 by @satahippy
+* [Db] Quote names in PostgreSQL queries. Fix #1916 by @satahippy
+* [ZF1] Various improvements by @Naktibalda See #1924
+* [ZF2][ZF2] Improved passing request headers by @Naktibalda
+* [Phalcon1] Improved dependency injector container check by @sergeyklay #1967
+* [Yii2] Enabled logging by @TriAnMan #1539
+* Attribute `feature` added to xml reports in `Codeception\TestCase\Test` test report by @tankist. See #1964
+* Fixed #1779 by @Naktibalda
+* ...special thanks to @Naktibalda for creating demo [ZF1](https://github.com/Naktibalda/codeception-zf1-tests) and [ZF2](https://github.com/Naktibalda/codeception-zf2-tests) applications with api tests examples.
+
+#### 2.0.13
+
+* Updated to PHPUnit 4.6
+* [Db] fixed regression introduced in 2.0.11. `haveInDatabase` works in PostgreSQL on tables with 'id' as primary key. Fix by @akireikin #1846 #1761
+* added `--no-rebuild` option to disable automatic actor classes rebuilds *2015-04-24*
+* suppressed warnings on failed actor classes auto-rebuilds
+* enable group listener for grouping with annotation by @litpuvn Fixes #1830
+* unix terminals output improved by calculating screen size. Done by @DexterHD See #1858
+* [Yii2] Remove line to activate request parsers by @m8rge #1843
+* [PhpBrowser][Frameworks] Various `fillField`/`submitForm` improvements by @zbateson See #1840. Fixes #1828, #1689
+* Allow following symlinks when searching for tests by @nechutny #1862
+
+#### 2.0.12
+
+* [Laravel5] Fix for undefined method `Symfony\Component\HttpFoundation\Request::route()` by @janhenkgerritsen
+* [Yii2] Fix https support and verbose output added by @TriAnMan See #1770
+* [Yii2] `haveRecord` to insert insert unsafe attributes by @nkovacs. Fixes #1775
+* [Asserts] `assertSame` and `assertNotSame` added by @hidechae *2015-04-03*
+* [Laravel5] Add `packages` option for application packages by @jonathantorres  #1782
+* [PhpBrowser][WebDriver][Frameworks] `seeInFormFields` method added for checking multiple form field values. See #1795 *2015-04-03*
+* [ZF2] Fixed setting Content-Type header by @Gorp See #1796 *2015-04-03*
+* [Yii2] Pass body request into yii2 request, allowing to send Xml payload by @m8rge. See #1806
+* Fixed conditional assertions firing TEST_AFTER event by @zbateson. Issues #1647 #1354 and #1111 *2015-04-03*
+* Fixing mocking Laravel models by removing `__mocked` property in classes created with Stub by @EVODelavega See #1785 *2015-04-03*
+* [WebDriver] `submitForm` allows array parameter values by @zbateson *2015-04-03*
+* [SOAP] Added `framework_collect_buffer` option to disable buffering output by @Noles *2015-04-03*
+* [Laravel4] added  to run artisan commands by @bgetsug *2015-04-03*
+* [AMQP] add a routing key to a push to exchange by @jistok *2015-04-03*
+* Interactive console updated to work with namespaces by @jistok *2015-04-03*
+* [PhpBrowser] added deleteHeader method by @zbateson *2015-04-03*
+* Disabling loading of bootstrap files by setting `bootstrap: false` in globall settings or inside suite config. Fixes #1813 *2015-04-03*
+
+
+#### 2.0.11
+
+* Updated to PHPUnit 4.5 *2015-02-23*
+* [Laravel5] module added by @janhenkgerritsen *2015-02-23*
+* Fixed problem with extensions being always loaded with default options by @sjableka. Fixes #1716 *2015-02-23*
+* [Db] Cleanup now works for tables with primary is not named 'id'. Fix by @KennethVeipert See #1727 *2015-02-23*
+* [PhpBrowser][Frameworks] `submitForm` improvements by @zbateson: *2015-02-23*
+
+Removed submitForm's reliance on using parse_str and parse_url to
+generate params (which caused unexpected side-effects like failing
+for values with ampersands).
+
+Modified the css selector for input elements so disabled input
+elements don't get sent default values.
+
+Modifications to ensure multiple values get sent correctly.
+
+* [Laravel4] middleware is loaded on requests. Fixed #1680 by @jotweh *2015-02-23*
+* [Dbh] Begin transaction only unless transaction is already in progress by @thecatontheflat *2015-02-23*
+* [PhpBrowser][Frameworks] Fix quiet crash when crawler is null by @aivus. See #1714 *2015-02-23*
+* [Yii2] Fixed usage of PUT method by @miroslav-chandler *2015-02-23*
+
+
+#### 2.0.10
+
+* **Console Improvement**: better formatting of test progress. Improved displaying of debug messages and PHP Fatal Errors.
+  Codeception now uses features of interactive shell to print testing progress.
+  In case of non-interactive shell (when running from CI like Jenkins) this feature is gracefully degraded to standard mode.
+  You can turn off interactive printing manually by providing `--no-interaction` option or simply `-n`
+* `ExceptionWrapper` messages unpacked into normal and verbose exceptions.
+* HTML reports now allow to filter tests by status. Thanks to @raistlin
+* Added '_failed' hook for Cest tests. Fixes #1660 *2015-02-02*
+* [REST] fixed setting Host header. Issue #1650 *2015-02-02*
+* [Laravel4] Disconnecting from database after each test to prevent Too many connections exception #1665 by @mnabialek *2015-02-02*
+* [Symfony2] Fixed kernel reuse in #1656 by @hacfi *2015-02-01*
+* [REST] request params are now correctly saved to `$this->params` property. Fixes #1682 by @gmhenderson *2015-02-01*
+* Interactive shell updated: deprecated Symfony helpers replaced, printed output cleaned *2015-01-28*
+* [PhpBrowser][Frameworks] Fixed `matchOption` to return the option value in case there is no value attribute by @synchrone. See #1663 *2015-01-26*
+* Fixed remote context options on CodeCoverage by @synchrone. See #1664 *2015-01-26*
+* [MongoDb] `seeNumElementsInCollection` method added by @sahanh
+* [MongoDb] Added new methods: `grabCollectionCount`, `seeElementIsArray`, `seeElementIsObject` by @antoniofrignani
+* [WebDriver] Allow `selectOption()` to select options not inside forms by @n8whnp See #1638
+* [FTP] Added support for sftp connections with an RSA SSH key by @mattvot.
+* [PhpBrowser][WebDriver] allows to handle domain and path for cookies *2015-01-24*
+* [CLI] Allow CLI module to handle nonzero response codes without failing by @DevShep
+* [Yii2] Fix the bug with `session_id()`. See #1606 by @TriAnMan
+* [PhpBrowser][Frameworks] Fix double slashes in certain forms submitted by `submitForm` by @Revisor. See #1625
+* [Facebook] `grabFacebookTestUserId` method added by @ipalaus
+* Always eval error level settings passed from config file.
+
+
 #### 2.0.9
 
 * **Fixed Symfony 2.6 compatibility in Yaml::parse by @antonioribeiro**
@@ -12,18 +149,10 @@ codecept run unit tests/unit/Codeception/TestLoaderTest
 codecept run unit Codeception
 codecept run unit Codeception:testAddCept
 
-codecept run unit /var/www/myapp.dev/vendor/codeception/codeception/tests/unit/Codeception
-codecept run unit /var/www/myapp.dev/vendor/codeception/codeception/tests/unit/Codeception:testAddCept
-
 codecept run unit Codeception/TestLoaderTest.php
 codecept run unit Codeception/TestLoaderTest
 codecept run unit Codeception/TestLoaderTest.php:testAddCept
 codecept run unit Codeception/TestLoaderTest:testAddCept
-
-codecept run unit /var/www/myapp.dev/vendor/codeception/codeception/tests/unit/Codeception/TestLoaderTest.php
-codecept run unit /var/www/myapp.dev/vendor/codeception/codeception/tests/unit/Codeception/TestLoaderTest.php:testAddCept
-codecept run unit /var/www/myapp.dev/vendor/codeception/codeception/tests/unit/Codeception/TestLoaderTest
-codecept run unit /var/www/myapp.dev/vendor/codeception/codeception/tests/unit/Codeception/TestLoaderTest:testAddCept
 
 codecept run unit tests/unit/Codeception
 codecept run unit tests/unit/Codeception:testAddCept
@@ -40,13 +169,13 @@ codecept run unit tests/unit/Codeception/TestLoaderTest:testAddCept
 * [REST] sendXXX methods now encode objects implementing JsonSerializable interfaces. *2014-12-19*
 * [REST] added methods to validate JSON structure *2014-12-19*
 
-`seeResponseJsonMatchesJsonPath` validates response JSON against [JsonPath](http://goessner.net/articles/JsonPath/).
-Usage of JsonPath requires library "flow/jsonpath" to be installed.
+[seeResponseJsonMatchesJsonPath](http://codeception.com/docs/modules/REST#seeResponseJsonMatchesJsonPath) validates response JSON against [JsonPath](http://goessner.net/articles/JsonPath/).
+Usage of JsonPath requires library `flow/jsonpath` to be installed.
 
-`seeResponseJsonMatchesXpath` validates response JSON against XPath.
-It converts JSON structure into valid XPath document and executes XPath for it.
+[seeResponseJsonMatchesXpath](http://codeception.com/docs/modules/REST#seeResponseJsonMatchesXpath) validates response JSON against XPath.
+It converts JSON structure into valid XML document and executes XPath for it.
 
-`grabDataFromResponseByJsonPath` method was added as well to grab data JSONPath.
+[grabDataFromResponseByJsonPath](http://codeception.com/docs/modules/REST#grabDataFromResponseByJsonPath) method was added as well to grab data JSONPath.
 
 * [REST] `grabDataFromJsonResponse` deprecated in favor of `grabDataFromResponseByJsonPath` *2014-12-19*
 * [PhpBrowser][Frameworks] fixed `Unreachable field` error while filling [] fields in input and textarea fields. Issues #1585 #1602 *2014-12-18*

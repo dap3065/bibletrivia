@@ -87,6 +87,68 @@ class GameController extends Controller
 				$bookName = (string)$node->name;
 				$chapters = (string)$node->chapters;
 				$data = $this->getVerse($bookName, $chapters);
+				if (isset($data['scripture']) && !empty($data['scripture'])) {
+					$words = explode(" ", $data['scripture']);
+					$count = count($words);
+					if ($count < 10) {
+						$check = 0;
+						while ($count < 10 && $check < 10) {
+							error_log("$count = word count $check");
+							$data = $this->getVerse($bookName, $chapters);
+							$words = explode(" ", $data['scripture']);
+							$count = count($words);
+							$check++;
+						}
+					}
+					$indexes = array();
+					while (count($indexes) < 4) {
+						$ind = rand(0, $count);
+						if (!in_array($ind, $indexes) && strlen($words[$ind]) > 2) {
+							$indexes[] = $ind;
+						}
+					}
+					$question = "";
+					for ($i = 0; $i<$count; $i++) {
+						if (in_array($i, $indexes)) {
+							$question .= "_______ ";
+						} else {
+							$question .= $words[$i] . " ";
+						}
+					}
+					sort($indexes);
+					$check = implode($indexes);
+					$answer = "";
+					foreach ($indexes as $i) {
+						$answer .= $words[$i] . ",";
+					}
+					$answers[] = $answer;
+					shuffle($indexes);
+					$test = implode($indexes);
+					if ($test != $check) {
+						$answer = "";
+						foreach ($indexes as $i) {
+							$answer .= $words[$i] . ",";
+						}
+						$answers[] = $answer;
+					}
+					while(count($answers) < 4) {
+						$indexes = array();
+						while (count($indexes) < 4) {
+							$ind = rand(0, $count);
+							if (!in_array($ind, $indexes) && strlen($words[$ind]) > 2) {
+								$indexes[] = $ind;
+							}
+						}
+						$test = implode($indexes);
+						if ($test != $check) {
+							$answer = "";
+							foreach ($indexes as $i) {
+								$answer .= $words[$i] . ",";
+							}
+							$answers[] = $answer;
+						}
+					}
+				}
 			} else if (is_null($nodes) || !is_array($nodes)) {
                 		Yii::$app->session->setFlash('error', "There was an error $book " . print_r($nodes, true));
 			}
@@ -99,7 +161,7 @@ class GameController extends Controller
 	}
 
 
-        return $this->render('list', array('node'=>array($book, $bookName, $chapters, $data),'bookName'=> $bookName));
+        return $this->render('list', array('node'=>array($book, $bookName, $chapters, $data), 'question'=>$question, 'answers'=>$answers,'bookName'=> $bookName));
     }
 
     public function getVerse($bookName, $chapters) {

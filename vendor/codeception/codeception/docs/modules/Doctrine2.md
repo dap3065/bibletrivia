@@ -26,6 +26,7 @@ It can be done in bootstrap file, by setting static $em property:
 
 * auto_connect: true - tries to get EntityManager through connected frameworks. If none found expects the $em values specified as described above.
 * cleanup: true - all doctrine queries will be run in transaction, which will be rolled back at the end of test.
+* symfony_em_service: 'doctrine.orm.entity_manager' - use the stated EntityManager (optional).
 
  ### Example (`functional.suite.yml`)
 
@@ -36,52 +37,6 @@ It can be done in bootstrap file, by setting static $em property:
               cleanup: false
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### dontSeeInRepository
  
 Flushes changes to database and performs ->findOneBy() call for current repository.
@@ -90,12 +45,9 @@ Flushes changes to database and performs ->findOneBy() call for current reposito
  * `param array` $params
 
 
-
 ### flushToDatabase
  
 Performs $em->flush();
-
-
 
 
 ### grabFromRepository
@@ -117,7 +69,6 @@ $email = $I->grabFromRepository('User', 'email', array('name' => 'davert'));
  * `param` $field
  * `param array` $params
 @return array
-
 
 
 ### haveFakeRepository
@@ -154,7 +105,6 @@ $I->haveInRepository('Entity\User', array('name' => 'davert'));
 ```
 
 
-
 ### persistEntity
  
 Adds entity to repository and flushes. You can redefine it's properties with the second parameter.
@@ -169,8 +119,6 @@ $I->persistEntity($user, array('name' => 'Miles'));
 
  * `param` $obj
  * `param array` $values
-
-
 
 
 ### seeInRepository

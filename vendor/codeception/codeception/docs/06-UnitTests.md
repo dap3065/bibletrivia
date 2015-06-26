@@ -177,7 +177,8 @@ function testSavingUser()
 ?>
 ```
 
-Database will be cleaned and populated after each test, as it happens for acceptance and functional tests.
+To enable the database functionality in the unit tests please make sure the `Db` module is part of the enabled module list in the unit.suite.yml configuration file. 
+The database will be cleaned and populated after each test, as it happens for acceptance and functional tests.
 If it's not your required behavior, please change the settings of `Db` module for the current suite.
 
 ### Accessing Module
@@ -257,4 +258,4 @@ Full reference on Stub util class can be found [here](/docs/reference/Stub).
 
 ## Conclusion
 
-PHPUnit tests are first-class citizens in test suites. Whenever you need to write and execute unit tests, you don't need to install PHPUnit, but use a Codeception to execute them. Some nice features can be added to common unit tests by integrating Codeception modules. For the most of unit and integration testing PHPUnit tests are just enough. They are fast and easy to maintain.
+PHPUnit tests are first-class citizens in test suites. Whenever you need to write and execute unit tests, you don't need to install PHPUnit, but use Codeception to execute them. Some nice features can be added to common unit tests by integrating Codeception modules. For the most of unit and integration testing PHPUnit tests are just enough. They are fast and easy to maintain.

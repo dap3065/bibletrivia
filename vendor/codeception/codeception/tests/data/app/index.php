@@ -26,10 +26,14 @@ $urls = array(
     '/redirect_interval' => 'redirect_interval',
     '/redirect_header_interval' => 'redirect_header_interval',
     '/redirect_self' => 'redirect_self',
+    '/relative_redirect' => 'redirect_relative',
+    '/relative/redirect' => 'redirect_relative',
+    '/relative/info' => 'info',
     '/facebook\??.*' => 'facebookController',
     '/form/(.*?)(#|\?.*?)?' => 'form',
     '/articles\??.*' => 'articles',
-    '/auth' => 'httpAuth'
+    '/auth' => 'httpAuth',
+    '/register' => 'register'
 );
 
 glue::stick($urls);

@@ -7,28 +7,6 @@ Special module for using asserts in your tests.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### assertContains
  
 Checks that haystack contains needle
@@ -66,7 +44,7 @@ Checks that condition is negative.
 
 ### assertGreaterThan
  
-Checks that expected is greater than actual
+Checks that actual is greater than expected
 
  * `param`        $expected
  * `param`        $actual
@@ -75,7 +53,7 @@ Checks that expected is greater than actual
 
 ### assertGreaterThanOrEqual
  
-Checks that expected is greater or equal than actual
+Checks that actual is greater or equal than expected
 
  * `param`        $expected
  * `param`        $actual
@@ -94,7 +72,7 @@ Checks that expected is greater or equal than actual
 
 ### assertLessThan
  
-Checks that expected is less than actual
+Checks that actual is less than expected
 
  * `param`        $expected
  * `param`        $actual
@@ -103,12 +81,11 @@ Checks that expected is less than actual
 
 ### assertLessThanOrEqual
  
-Checks that expected is less or equal than actual
+Checks that actual is less or equal than expected
 
  * `param`        $expected
  * `param`        $actual
  * `param string` $message
-
 
 
 ### assertNotContains
@@ -145,6 +122,15 @@ Checks that variable is not NULL
  * `param string` $message
 
 
+### assertNotSame
+ 
+Checks that two variables are not same
+
+ * `param`        $expected
+ * `param`        $actual
+ * `param string` $message
+
+
 ### assertNull
  
 Checks that variable is NULL
@@ -152,6 +138,14 @@ Checks that variable is NULL
  * `param`        $actual
  * `param string` $message
 
+
+### assertSame
+ 
+Checks that two variables are same
+
+ * `param`        $expected
+ * `param`        $actual
+ * `param string` $message
 
 
 
@@ -163,17 +157,10 @@ Checks that condition is positive.
  * `param string` $message
 
 
-
-
 ### fail
  
 Fails the test with message.
 
  * `param` $message
-
-
-
-
-
 
 <p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.0/src/Codeception/Module/Asserts.php">Help us to improve documentation. Edit module reference</a></div>

@@ -12,12 +12,12 @@ class Message
     public function __construct($message, Output $output = null)
     {
         $this->message = $message;
-        $this->output  = $output;
+        $this->output = $output;
     }
 
     public function with($param)
     {
-        $args          = array_merge(array($this->message), func_get_args());
+        $args = array_merge([$this->message], func_get_args());
         $this->message = call_user_func_array('sprintf', $args);
 
         return $this;
@@ -36,8 +36,12 @@ class Message
         if ($message_length < $length) {
             $this->message .= str_repeat($char, $length - $message_length);
         }
+        return $this;
+    }
 
-        // todo: cut?
+    public function cut($length)
+    {
+        $this->message = substr($this->message, 0, $length);
         return $this;
     }
 
@@ -101,6 +105,14 @@ class Message
         $this->message = $this->output->formatHelper->formatBlock($this->message, $style, true);
 
         return $this;
+    }
+
+    public function getLength()
+    {
+        if (function_exists('mb_strlen')) {
+            return mb_strlen($this->message);
+        }
+        return strlen($this->message);
     }
 
     public function __toString()

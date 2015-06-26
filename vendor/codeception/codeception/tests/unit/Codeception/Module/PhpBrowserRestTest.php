@@ -152,6 +152,35 @@ class PhpBrowserRestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('http://localhost:8010/api/v1/users',$request->getUri());
     }
 
+    /**
+     * @Issue https://github.com/Codeception/Codeception/issues/1650
+     */
+    public function testHostHeaders()
+    {
+        if (version_compare(PHP_VERSION, '5.5.0', '<')) {
+            $this->markTestSkipped('only for php 5.5');
+        }
+        $this->module->haveHttpHeader('Host','http://www.example.com');
+        $this->module->sendGET('/rest/ping/');
+        $this->module->seeResponseContains('host: http://www.example.com');
+    }
+    
+    /**
+     * @Issue https://github.com/Codeception/Codeception/issues/2070
+     */
+    public function testArrayOfZeroesInJsonResponse()
+    {
+        $this->module->haveHttpHeader('Content-Type', 'application/json');
+        $this->module->sendGET('/rest/zeroes');
+        $this->module->dontSeeResponseContainsJson([
+            'responseCode' => 0,
+            'data' => [
+                0,
+                0,
+                0,
+            ]
+        ]);
+    }
 
     protected function shouldFail()
     {

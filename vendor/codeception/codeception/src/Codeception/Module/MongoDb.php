@@ -58,7 +58,10 @@ class MongoDb extends \Codeception\Module
     protected $config = array(
         'populate' => true,
         'cleanup'  => true,
-        'dump'     => null);
+        'dump'     => null,
+        'user'     => null,
+        'password' => null
+    );
 
     protected $populated = false;
 
@@ -67,7 +70,7 @@ class MongoDb extends \Codeception\Module
      */
     public $driver;
 
-    protected $requiredFields = array('dsn', 'user', 'password');
+    protected $requiredFields = array('dsn');
 
     public function _initialize()
     {
@@ -145,6 +148,22 @@ class MongoDb extends \Codeception\Module
      * Inserts data into collection
      *
      * ``` php
+     * <?php
+     * $I->useDatabase('db_1');
+     * ```
+     *
+     * @param $dbName
+     */
+    public function useDatabase($dbName)
+    {
+        $this->driver->setDatabase($dbName);
+    }
+
+    /**
+     * Inserts data into collection
+     *
+     * ``` php
+     * <?php
      * $I->haveInCollection('users', array('name' => 'John', 'email' => 'john@coltrane.com'));
      * $user_id = $I->haveInCollection('users', array('email' => 'john@coltrane.com'));
      * ```
@@ -210,6 +229,86 @@ class MongoDb extends \Codeception\Module
     public function grabFromCollection($collection, $criteria = array()) {
         $collection = $this->driver->getDbh()->selectCollection($collection);
         return $collection->findOne($criteria);
+    }
+
+    /**
+     * Grabs the documents count from a collection
+     *
+     * ``` php
+     * <?php
+     * $count = $I->grabCollectionCount('users');
+     * // or
+     * $count = $I->grabCollectionCount('users', array('isAdmin' => true));
+     * ```
+     *
+     * @param $collection
+     * @param array $criteria
+     * @return integer
+     */
+    public function grabCollectionCount($collection, $criteria = array()) {
+        $collection = $this->driver->getDbh()->selectCollection($collection);
+        return $collection->count($criteria);
+    }
+
+    /**
+     * Asserts that an element in a collection exists and is an Array
+     *
+     * ``` php
+     * <?php
+     * $I->seeElementIsArray('users', array('name' => 'John Doe') , 'data.skills');
+     * ```
+     *
+     * @param String $collection
+     * @param Array $criteria
+     * @param String $elementToCheck
+     */
+    public function seeElementIsArray($collection, $criteria = array(), $elementToCheck = null)
+    {
+        $collection = $this->driver->getDbh()->selectCollection($collection);
+
+        $res = $collection->count(array_merge($criteria, array($elementToCheck => array('$exists' => true), '$where' =>"Array.isArray(this.{$elementToCheck})")));
+        if ($res > 1) throw new \PHPUnit_Framework_ExpectationFailedException('Error: you should test against a single element criteria when asserting that elementIsArray');
+        \PHPUnit_Framework_Assert::assertEquals(1, $res, 'Specified element is not a Mongo Object');
+    }
+
+    /**
+     * Asserts that an element in a collection exists and is an Object
+     *
+     * ``` php
+     * <?php
+     * $I->seeElementIsObject('users', array('name' => 'John Doe') , 'data');
+     * ```
+     *
+     * @param String $collection
+     * @param Array $criteria
+     * @param String $elementToCheck
+     */
+    public function seeElementIsObject($collection, $criteria = array(), $elementToCheck = null)
+    {
+        $collection = $this->driver->getDbh()->selectCollection($collection);
+
+        $res = $collection->count(array_merge($criteria, array($elementToCheck => array('$exists' => true), '$where' =>"! Array.isArray(this.{$elementToCheck}) && isObject(this.{$elementToCheck})")));
+        if ($res > 1) throw new \PHPUnit_Framework_ExpectationFailedException('Error: you should test against a single element criteria when asserting that elementIsObject');
+        \PHPUnit_Framework_Assert::assertEquals(1, $res, 'Specified element is not a Mongo Object');
+    }
+    /**
+     * Count number of records in a collection
+     *
+     * ``` php
+     * <?php
+     * $I->seeNumElementsInCollection('users', 2);
+     * $I->seeNumElementsInCollection('users', 1, array('name' => 'miles'));
+     * ```
+     *
+     * @param $collection
+     * @param integer $expected
+     * @param array $criteria
+     */
+    public function seeNumElementsInCollection($collection, $expected, $criteria = array())
+    {
+        $collection = $this->driver->getDbh()->selectCollection($collection);
+        $res = $collection->count($criteria);
+        \PHPUnit_Framework_Assert::assertSame($expected, $res);
     }
 
 }

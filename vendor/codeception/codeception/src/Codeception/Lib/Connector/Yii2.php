@@ -3,6 +3,8 @@
 namespace Codeception\Lib\Connector;
 
 use Yii;
+use yii\web\HttpException;
+use yii\base\ExitException;
 use yii\web\Response as YiiResponse;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\BrowserKit\Client;
@@ -70,16 +72,28 @@ class Yii2 extends Client
 
         $app->getResponse()->on(YiiResponse::EVENT_AFTER_PREPARE, array($this, 'processResponse'));
 
-        // disabling logging. Logs are slowing test execution down
-        foreach ($app->log->targets as $target) {
-            $target->enabled = false;
-        }
-
         $this->headers    = array();
         $this->statusCode = null;
 
         ob_start();
-        $app->handleRequest($app->getRequest())->send();
+
+        $yiiRequest = $app->getRequest();
+        $yiiRequest->setRawBody($request->getContent());
+        try {
+            $app->handleRequest($yiiRequest)->send();
+        } catch (\Exception $e) {
+            if ($e instanceof HttpException) {
+                // we shouldn't discard existing output as PHPUnit preform output level verification since PHPUnit 4.2.
+                $app->errorHandler->discardExistingOutput = false;
+                $app->errorHandler->handleException($e);
+            } elseif ($e instanceof ExitException) {
+                // nothing to do
+            } else {
+                // for exceptions not related to Http, we pass them to Codeception
+                throw $e;
+            }
+        }
+
         $content = ob_get_clean();
 
         // catch "location" header and display it in debug, otherwise it would be handled

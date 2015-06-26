@@ -70,7 +70,7 @@ class REST extends \Codeception\Module
     public function _before(\Codeception\TestCase $test)
     {
         $this->prepareConnection();
-        $this->client = &$this->connectionModule->client;
+        $this->client = $this->connectionModule->client;
         $this->resetVariables();
 
         if ($this->config['xdebug_remote']
@@ -206,7 +206,7 @@ class REST extends \Codeception\Module
      */
     public function amBearerAuthenticated($accessToken)
     {
-        $this->haveHttpHeader('Authorization', 'Bearer '.$accessToken);
+        $this->haveHttpHeader('Authorization', 'Bearer ' . $accessToken);
     }
 
     /**
@@ -353,26 +353,37 @@ class REST extends \Codeception\Module
 
     protected function execute($method = 'GET', $url, $parameters = array(), $files = array())
     {
+        $this->debugSection("Request headers", $this->headers);
+
         foreach ($this->headers as $header => $val) {
             $header = str_replace('-','_',strtoupper($header));
             $this->client->setServerParameter("HTTP_$header", $val);
 
-            # Issue #827 - symfony foundation requires 'CONTENT_TYPE' without HTTP_
-            if ($this->isFunctional and $header == 'CONTENT_TYPE') {
+            // Issue #1650 - Symfony BrowserKit changes HOST header to request URL
+            if ($header === 'HOST') {
+                $this->client->setServerParameter("HTTP_ HOST", $val);
+            }
+
+            // Issue #827 - symfony foundation requires 'CONTENT_TYPE' without HTTP_
+            if ($this->isFunctional && $header === 'CONTENT_TYPE') {
                 $this->client->setServerParameter($header, $val);
             }
         }
 
         // allow full url to be requested
-        $url = (strpos($url, '://') === false ? $this->config['url'] : '') . $url;
+        if (strpos($url, '://') === false) {
+            $url = $this->config['url'] . $url;
+        }
 
+        $this->params = $parameters;
+        
         $parameters = $this->encodeApplicationJson($method, $parameters);
 
-        if (is_array($parameters) || $method == 'GET') {
-            if (!empty($parameters) && $method == 'GET') {
+        if (is_array($parameters) || $method === 'GET') {
+            if (!empty($parameters) && $method === 'GET') {
                 $url .= '?' . http_build_query($parameters);
             }
-            if($method == 'GET') {
+            if($method === 'GET') {
                 $this->debugSection("Request", "$method $url");
             } else {
                 $this->debugSection("Request", "$method $url ".json_encode($parameters));
@@ -395,9 +406,11 @@ class REST extends \Codeception\Module
 
     protected function encodeApplicationJson($method, $parameters)
     {
-        if (array_key_exists('Content-Type', $this->headers)
-            && $this->headers['Content-Type'] === 'application/json'
-            && $method != 'GET'
+        if ($method !== 'GET' && array_key_exists('Content-Type', $this->headers)
+            && ($this->headers['Content-Type'] === 'application/json' 
+                || preg_match('!^application/.+\+json$!', $this->headers['Content-Type'])
+                ) 
+            
         ) {
             if ($parameters instanceof \JsonSerializable) {
                 return json_encode($parameters);
@@ -418,10 +431,11 @@ class REST extends \Codeception\Module
     public function seeResponseIsJson()
     {
         json_decode($this->response);
+        $errorCode = json_last_error();
         \PHPUnit_Framework_Assert::assertEquals(
-            0,
-            $num = json_last_error(),
-            "json decoding error #$num, see http://php.net/manual/en/function.json-last-error.php"
+            JSON_ERROR_NONE,
+            $errorCode,
+            "json decoding error #$errorCode, see http://php.net/manual/en/function.json-last-error.php"
         );
     }
     /**
@@ -433,18 +447,18 @@ class REST extends \Codeception\Module
     {
         libxml_use_internal_errors(true);
         $doc = simplexml_load_string($this->response);
-        $num="";
-        $title="";
-        if ($doc===false) {
+        $errorCode = "";
+        $errorMessage = "";
+        if ($doc === false) {
             $error = libxml_get_last_error();
-            $num=$error->code;
-            $title=trim($error->message);
+            $errorCode = $error->code;
+            $errorMessage = trim($error->message);
             libxml_clear_errors();
         }
         libxml_use_internal_errors(false);
         \PHPUnit_Framework_Assert::assertNotSame(false,
             $doc ,
-            "xml decoding error #$num with message \"$title\", see http://www.xmlsoft.org/html/libxml-xmlerror.html"
+            "xml decoding error #$errorCode with message \"$errorMessage\", see http://www.xmlsoft.org/html/libxml-xmlerror.html"
         );
     }
 
@@ -571,7 +585,7 @@ class REST extends \Codeception\Module
      * JsonPath is XPath equivalent for querying Json structures. Try your JsonPath expressions [online](http://jsonpath.curiousconcept.com/).
      * Even for a single value an array is returned.
      *
-     * This method **require [`flow/jsonpath`](https://github.com/FlowCommunications/JSONPath/) library to be installed**.
+     * This method **require [`flow/jsonpath` > 0.2](https://github.com/FlowCommunications/JSONPath/) library to be installed**.
      *
      * Example:
      *
@@ -598,7 +612,6 @@ class REST extends \Codeception\Module
      * JSON is not supposed to be checked against XPath, yet it can be converted to xml and used with XPath.
      * This assertion allows you to check the structure of response json.
      *     *
-     * ```json
      * ```json
      *   { "store": {
      *       "book": [
@@ -645,7 +658,7 @@ class REST extends \Codeception\Module
      * JsonPath is XPath equivalent for querying Json structures. Try your JsonPath expressions [online](http://jsonpath.curiousconcept.com/).
      * This assertion allows you to check the structure of response json.
      *
-     * This method **require [`flow/jsonpath`](https://github.com/FlowCommunications/JSONPath/) library to be installed**.
+     * This method **require [`flow/jsonpath` > 0.2](https://github.com/FlowCommunications/JSONPath/) library to be installed**.
      *
      * ```json
      *   { "store": {
@@ -686,6 +699,17 @@ class REST extends \Codeception\Module
     {
         $this->assertNotEmpty((new JsonArray($this->response))->filterByJsonPath($jsonPath),
             "Received JSON did not match the JsonPath provided\n".$this->response);
+    }
+
+    /**
+     * Opposite to seeResponseJsonMatchesJsonPath
+     *
+     * @param array $jsonPath
+     */
+    public function dontSeeResponseJsonMatchesJsonPath($jsonPath)
+    {
+        $this->assertEmpty((new JsonArray($this->response))->filterByJsonPath($jsonPath),
+            "Received JSON did (but should not) match the JsonPath provided\n".$this->response);
     }
 
     /**

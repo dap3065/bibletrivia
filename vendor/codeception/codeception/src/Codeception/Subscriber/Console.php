@@ -37,6 +37,10 @@ class Console implements EventSubscriberInterface
         Events::TEST_FAIL_PRINT => 'printFail',
     ];
 
+    /**
+     * @var Message
+     */
+    protected $message = null;
     protected $steps = true;
     protected $debug = false;
     protected $color = true;
@@ -44,10 +48,9 @@ class Console implements EventSubscriberInterface
     protected $lastTestFailed = false;
     protected $printedTest = null;
     protected $rawStackTrace = false;
-
     protected $traceLength = 5;
-
     protected $columns = array(40, 5);
+    protected $output;
 
     public function __construct($options)
     {
@@ -89,36 +92,18 @@ class Console implements EventSubscriberInterface
     {
         $test = $e->getTest();
         $this->printedTest = $test;
+        $this->message = null;
+        $this->output->waitForDebugOutput = true;
 
-        if ($test instanceof TestCase) {
-            return;
+        if (!$test instanceof TestCase) {
+            $this->writeCurrentTest($test);
         }
-
-        $this->message($test->toString())
-            ->style('focus')
-            ->prepend('Running ')
-            ->width($this->columns[0])
-            ->write();
     }
 
     public function before(TestEvent $e)
     {
         $test = $e->getTest();
-        $filename = $test->getSignature();
-
-        if ($test->getFeature()) {
-            $this->message("Trying to <focus>%s</focus> (%s) ")
-                ->with($test->getFeature(), $filename)
-                ->width($this->columns[0])
-                ->write();
-
-        } else {
-            $this->message("Running <focus>%s</focus> ")
-                ->with($filename)
-                ->width($this->columns[0])
-                ->write();
-        }
-
+        $this->writeCurrentTest($test);
         if ($this->steps && $this->isDetailed($test)) {
             $this->output->writeln("\nScenario:");
         }
@@ -135,11 +120,15 @@ class Console implements EventSubscriberInterface
             $this->message('PASSED')->center(' ')->style('ok')->append("\n")->writeln();
             return;
         }
+        $this->writeFinishedTest($e->getTest());
         $this->message('Ok')->writeln();
     }
 
     public function endTest(TestEvent $e)
     {
+        if (!$this->output->waitForDebugOutput) {
+            $this->message()->width($this->columns[0]+$this->columns[1],'^')->writeln();
+        }
         $this->printedTest = null;
     }
 
@@ -153,6 +142,7 @@ class Console implements EventSubscriberInterface
             $this->message('FAIL')->center(' ')->style('error')->append("\n")->writeln();
             return;
         }
+        $this->writeFinishedTest($e->getTest());
         $this->message('Fail')->style('error')->writeln();
     }
 
@@ -162,6 +152,7 @@ class Console implements EventSubscriberInterface
             $this->message('ERROR')->center(' ')->style('error')->append("\n")->writeln();
             return;
         }
+        $this->writeFinishedTest($e->getTest());
         $this->message('Error')->style('error')->writeln();
     }
 
@@ -170,6 +161,7 @@ class Console implements EventSubscriberInterface
         if (!$this->printedTest) {
             return;
         }
+        $this->writeFinishedTest($e->getTest());
         $message = $this->message('Skipped');
         if ($this->isDetailed($e->getTest())) {
             $message->apply('strtoupper')->append("\n");
@@ -179,6 +171,7 @@ class Console implements EventSubscriberInterface
 
     public function testIncomplete(FailEvent $e)
     {
+        $this->writeFinishedTest($e->getTest());
         $message = $this->message('Incomplete');
         if ($this->isDetailed($e->getTest())) {
             $message->apply('strtoupper')->append("\n");
@@ -269,7 +262,12 @@ class Console implements EventSubscriberInterface
     {
 
         static $limit = 10;
-        $this->message("[%s] %s")->with(get_class($e), $e->getMessage())->block('error')->writeln(
+
+        $class = $e instanceof \PHPUnit_Framework_ExceptionWrapper
+            ? $e->getClassname()
+            : get_class($e);
+
+        $this->message("[%s] %s")->with($class, $e->getMessage())->block('error')->writeln(
             $e instanceof \PHPUnit_Framework_AssertionFailedError
                 ? OutputInterface::VERBOSITY_DEBUG
                 : OutputInterface::VERBOSITY_VERBOSE
@@ -284,15 +282,25 @@ class Console implements EventSubscriberInterface
 
         $i = 0;
         foreach ($trace as $step) {
-            $i++;
-
-            $message = $this->message($i)->prepend('#')->width(4);
-            $message->append($step['file'] . ':' . $step['line']);
-            $message->writeln();
-
             if ($i >= $limit) {
                 break;
             }
+            $i++;
+
+            $message = $this->message($i)->prepend('#')->width(4);
+
+            if (!isset($step['file'])) {
+                foreach (['class','type','function'] as $info) {
+                    if (!isset($step[$info])) {
+                        continue;
+                    }
+                    $message->append($step[$info]);
+                }
+                $message->writeln();
+                continue;
+            }
+            $message->append($step['file'] . ':' . $step['line']);
+            $message->writeln();
         }
 
         $prev = $e->getPrevious();
@@ -396,6 +404,73 @@ class Console implements EventSubscriberInterface
                 continue;
             }
             $this->columns[0] = max($this->columns[0], 10 + strlen($test->toString()));
+        }
+        $cols = $this->columns[0];
+        if ((strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN')
+            and (php_sapi_name() == "cli")
+            and (getenv('TERM'))
+            and (getenv('TERM') != 'unknown')
+        ) {
+            $cols = intval(`command -v tput >> /dev/null 2>&1 && tput cols`);
+        }
+        if ($cols < $this->columns[0]) {
+            $this->columns[0] = $cols-$this->columns[1];
+        }
+    }
+
+    /**
+     * @param \PHPUnit_Framework_TestCase $test
+     * @param bool $inProgress
+     * @return Message
+     */
+    protected function getTestMessage(\PHPUnit_Framework_TestCase $test, $inProgress = false)
+    {
+        if (!$test instanceof TestCase) {
+            return $this->message = $this->message('%s::%s')
+                ->with(get_class($test), $test->getName(true))
+                ->apply(function ($str) { return str_replace('with data set', "|", $str); } )
+                ->cut($inProgress ? $this->columns[0] + $this->columns[1] - 16 : $this->columns[0] - 2)
+                ->style('focus')
+                ->prepend($inProgress ? 'Running ' : '');
+        }
+        $filename = $test->getSignature();
+        $feature = $test->getFeature();
+
+        if ($feature) {
+            return $this->message = $this->message($inProgress ? $feature : ucfirst($feature))
+                ->apply(function ($str) { return str_replace('with data set', "|", $str); } )
+                ->cut($inProgress ? $this->columns[0] + $this->columns[1] - 18 - strlen($filename) : $this->columns[0] - 5 - strlen($filename))
+                ->style('focus')
+                ->prepend($inProgress ? 'Trying to ' : '')
+                ->append(" ($filename)");
+        }
+        return $this->message = $this->message("<focus>%s</focus> ")
+            ->prepend($inProgress ? 'Running ' : '')
+            ->with($filename);
+    }
+    
+    protected function writeCurrentTest(\PHPUnit_Framework_TestCase $test)
+    {
+        if (!$this->isDetailed($test) and $this->output->isInteractive()) {
+            $this->getTestMessage($test, true)
+                ->append('... ')
+                ->write();
+            return;
+        }
+        $this->getTestMessage($test)->write();
+    }
+
+    protected function writeFinishedTest(\PHPUnit_Framework_TestCase $test)
+    {
+        if ($this->isDetailed($test)) {
+            return;
+        }
+        if ($this->output->isInteractive()) {
+            $this->getTestMessage($test)->prepend("\x0D")->width($this->columns[0])->write();
+            return;
+        } 
+        if ($this->message) {
+            $this->message('')->width($this->columns[0] - $this->message->apply('strip_tags')->getLength())->write();
         }
     }
 
