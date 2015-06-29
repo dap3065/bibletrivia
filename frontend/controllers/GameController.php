@@ -82,11 +82,16 @@ class GameController extends Controller
 			$nodes = $xml->xpath("//entry[@handle='$book']");
 			if (is_array($nodes)) {
 				foreach ($nodes as $n) {
-					$node = $n;
+					if (is_object($n))
+					  $node = $n;
+				}
+				if (!isset($node)) {
+					error_log("$book =book" . print_r($nodes, true) . "\n" . print_r($xml, true));
 				}
 				$bookName = (string)$node->name;
 				$chapters = (string)$node->chapters;
 				$data = $this->getVerse($bookName, $chapters);
+				error_log(print_r($data, true));
 				if (isset($data['scripture']) && !empty($data['scripture'])) {
 					$words = explode(" ", $data['scripture']);
 					$count = count($words);
@@ -103,7 +108,7 @@ class GameController extends Controller
 					$indexes = array();
 					while (count($indexes) < 4) {
 						$ind = rand(0, $count);
-						if (!in_array($ind, $indexes) && strlen($words[$ind]) > 2) {
+						if (isset($words[$ind]) && !in_array($ind, $indexes) && strlen($words[$ind]) > 2) {
 							$indexes[] = $ind;
 						}
 					}
@@ -135,7 +140,7 @@ class GameController extends Controller
 						$indexes = array();
 						while (count($indexes) < 4) {
 							$ind = rand(0, $count);
-							if (!in_array($ind, $indexes) && strlen($words[$ind]) > 2) {
+							if (isset($words[$ind]) && !in_array($ind, $indexes) && strlen($words[$ind]) > 2) {
 								$indexes[] = $ind;
 							}
 						}
@@ -148,6 +153,10 @@ class GameController extends Controller
 							$answers[] = $answer;
 						}
 					}
+				} else {
+					$question = $answer = "";
+					$answers = array();
+	                		Yii::$app->session->setFlash('error', "There was an error $book " . print_r($nodes, true));
 				}
 			} else if (is_null($nodes) || !is_array($nodes)) {
                 		Yii::$app->session->setFlash('error', "There was an error $book " . print_r($nodes, true));
@@ -171,9 +180,9 @@ class GameController extends Controller
 	$httpCode = 404;
 	while (((stristr($str, 'we were not able to find that passage')  !== false)
 		|| $httpCode == 404)
-		&& $cnt < 10) {
+		&& $cnt < 20) {
 		$verse = rand(1,100);
-		$chapter = rand(1, $chapters);
+		$chapter = rand(1, intval($chapters));
 		$urlBookName = strtolower(str_replace(" ", "_", $bookName));
 		$url = "http://biblehub.com/$urlBookName/$chapter-$verse.htm";
 		error_log($url);

@@ -43,7 +43,7 @@ echo Carousel::widget([
 
         <p class="lead">Have fun learning the Word of God!</p>
 <p>
-<?php echo Html::a("Play Now!", "/site/contact", array('class'=>'btn btn-lg btn-success'))?>
+<?php echo Html::a("Play Now!", "/game/list", array('class'=>'btn btn-lg btn-success'))?>
 </p>
     </div>
 
@@ -55,21 +55,21 @@ echo Carousel::widget([
 
                 <p>We rank our players against each other. Compare yourself and set your goals.</p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Check your stats</a></p>
+                <p><?php echo Html::a("Check Your Stats", "/game/stats", array('class'=>'btn btn-default'))?></p>
             </div>
             <div class="col-lg-4">
                 <h2>Compete against family & friends!</h2>
 
                 <p>We have single player or multiplayer games.</p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Compete Now</a></p>
+                <p><?php echo Html::a("Compete Now", "/game/list", array('class'=>'btn btn-default'))?></p>
             </div>
             <div class="col-lg-4">
                 <h2>Get the mobile app!</h2>
 
                 <p>Play on the go.  Challenge those around you!  Play against family and friends anytime.</p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Get the APP</a></p>
+                <p><?php echo Html::a("Download Now!", "/game/download", array('class'=>'btn btn-default'))?></p>
             </div>
         </div>
 
