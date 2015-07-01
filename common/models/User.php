@@ -7,6 +7,9 @@ use yii\base\ErrorException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use \app\models\Game;
+use \app\models\GameUser;
+use \app\models\Question;
 
 /**
  * User model
@@ -217,5 +220,21 @@ class User extends ActiveRecord implements IdentityInterface
 	  }
 	}
 	return true;
+    }
+
+    public function getGameUsers()
+    {
+        return $this->hasMany(GameUser::className(), ['user_id' => 'id']);
+    }
+
+    public function getAnswers()
+    {
+        return $this->hasMany(Answer::className(), ['user_id' => 'id']);
+    }
+
+    public function getGames()
+    {
+	return $this->hasMany(Game::className(), ['id' => 'game_id'])
+		->via('gameUsers');
     }
 }

@@ -13,6 +13,8 @@ use Yii;
  * @property integer $status
  * @property integer $last_play
  * @property string $created
+ * @property GameUser $gameUsers;
+ * @property Question $questions;
  */
 class Game extends \yii\db\ActiveRecord
 {
@@ -49,4 +51,23 @@ class Game extends \yii\db\ActiveRecord
             'created' => 'Created',
         ];
     }
+
+    public function getGameUsers()
+    {
+	return $this->hasMany(GameUser::className(), ['game_id' => 'id']);
+    }
+
+    public function getUsers()
+    {
+        return $this->hasMany(User::className(), ['id' => 'user_id'])
+		->via(gameUsers);
+    }
+    
+
+    public function getQuestions()
+    {
+	return $this->hasMany(Question::className(), ['game_id' => 'id']);
+    }
+
+    
 }

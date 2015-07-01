@@ -49,4 +49,14 @@ class Answer extends \yii\db\ActiveRecord
             'created' => 'Created',
         ];
     }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getQuestion()
+    {
+        return $this->hasOne(Question::className(), ['id' => 'question_id']);
+    }
 }

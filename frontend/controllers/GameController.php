@@ -2,16 +2,16 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use \app\models\Game;
+use \app\models\GameUser;
+use \app\models\Question;
+
+
 
 /**
  * Game controller
@@ -72,6 +72,20 @@ class GameController extends Controller
 
     public function actionList()
     {
+	$games = Yii::$app->user->identity->games;
+	if (count($games)) {
+		foreach($games as $g) {
+			$game = $g;
+			break;
+		}
+                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
+	} else {
+	   $game = new Game();
+	   $game->score = 0;
+	   $game->status = 1;
+	   $game->save();
+	   Yii::$app->user->identity->link('games', $game);
+	}
 	$file = "/var/www/bibletrivia/booksofthebible.xml";
 	$data = "";
 	if (file_exists($file)) {
@@ -87,6 +101,9 @@ class GameController extends Controller
 				}
 				if (!isset($node)) {
 					error_log("$book =book" . print_r($nodes, true) . "\n" . print_r($xml, true));
+				}
+				if (!isset($node)) {
+					error_log("stop me");
 				}
 				$bookName = (string)$node->name;
 				$chapters = (string)$node->chapters;
@@ -153,6 +170,23 @@ class GameController extends Controller
 							$answers[] = $answer;
 						}
 					}
+					$q = new Question();
+					shuffle($answers);
+					$index = 0;
+					$answer = 0;
+					foreach($answers as $a) {
+						if ($a == $check) {
+							$answer = $index;
+							break;
+						}
+						$index++;
+					}
+					$q->value = $question;
+					$q->answers = serialize($answers);
+					$q->answer = $answer;
+					$q->hint = "$bookName " .  $data['chapter'] . ":" . $data['verse'];
+					$q->game_id = $game->id;
+					$q->save();
 				} else {
 					$question = $answer = "";
 					$answers = array();
@@ -166,7 +200,7 @@ class GameController extends Controller
                 	Yii::$app->session->setFlash('error', 'There was an error.' . print_r($ex, true));
 		}
 	} else {
-                Yii::$app->session->setFlash('error', 'There was an error sending email.');
+                Yii::$app->session->setFlash('error', 'There was an error getting your question.');
 	}
 
 

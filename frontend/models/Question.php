@@ -53,4 +53,10 @@ class Question extends \yii\db\ActiveRecord
             'created' => 'Created',
         ];
     }
+
+    public function getGame()
+    {
+        return $this->hasOne(Game::className(), ['id' => 'game_id']);
+    }
+
 }

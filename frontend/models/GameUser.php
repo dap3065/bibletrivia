@@ -11,6 +11,8 @@ use Yii;
  * @property integer $game_id
  * @property integer $user_id
  * @property string $created
+ * @property Game $games
+ * @property User $users
  */
 class GameUser extends \yii\db\ActiveRecord
 {
@@ -44,5 +46,15 @@ class GameUser extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'created' => 'Created',
         ];
+    }
+
+    public function getGames()
+    {
+        return $this->hasMany(Game::className(), ['id' => 'game_id']);
+    }
+
+    public function getUsers()
+    {
+        return $this->hasMany(User::className(), ['id' => 'user_id']);
     }
 }
