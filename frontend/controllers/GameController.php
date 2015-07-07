@@ -76,8 +76,17 @@ class GameController extends Controller
 	$games = Yii::$app->user->identity->games;
 	if (count($games)) {
 		foreach($games as $g) {
-			$game = $g;
-			break;
+			if ($g->status == 1) {
+			  $game = $g;
+			  break;
+			}
+		}
+		if (!isset($game)) {
+		   $game = new Game();
+		   $game->score = 0;
+	   	   $game->status = 1;
+	   	   $game->save();
+	   	   Yii::$app->user->identity->link('games', $game);
 		}
 	} else {
 	   $game = new Game();
@@ -103,7 +112,8 @@ class GameController extends Controller
 					error_log("$book =book" . print_r($nodes, true) . "\n" . print_r($xml, true));
 				}
 				if (!isset($node)) {
-					error_log("stop me");
+					error_log("stop me" . print_r($node, true));
+					$this->redirect("/game/list");
 				}
 				$bookName = (string)$node->name;
 				$chapters = (string)$node->chapters;
@@ -201,6 +211,7 @@ class GameController extends Controller
 					$form = new AnswerForm();
 					$form->questionId = $q->id;
 					$form->userId = \Yii::$app->user->identity->id;
+					$form->points = 30;
 				} else {
 					$question = $answer = "";
 					$answers = array();
@@ -283,9 +294,16 @@ class GameController extends Controller
 	if ($answer->load(Yii::$app->request->post()) && ($answerId = $answer->checkAnswer())) {
 		$answer = Answer::findOne($answerId);
 		if ($answer->correct) {
-	        	return $this->render('correct', array('answer'=>$answer, 'question'=>$answer->question));
+			$game = $answer->question->game;
+			if ($game->score > 200 || count($game->questions) > 30) {
+				$game->status = 2;
+				$game->save();
+		        	return $this->render('gameover', array('answer'=>$answer, 'question'=>$answer->question, 'game'=>$game));
+			} else { 
+		        	return $this->render('correct', array('answer'=>$answer, 'question'=>$answer->question, 'game'=>$answer->question->game));
+			}
 		} else {
-	         	return $this->render('wrong', array('answer'=>$answer, 'question'=>$answer->question));
+	         	return $this->render('wrong', array('answer'=>$answer, 'question'=>$answer->question, 'game'=>$answer->question->game));
 		}
 	} else {
          	return $this->redirect('game/list');
