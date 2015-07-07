@@ -2,6 +2,8 @@
 /* @var $this yii\web\View */
 use yii\bootstrap\Carousel;
 use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+
 
 $this->title = 'BIBLE TRIVIA NOW';
 ?>
@@ -16,13 +18,16 @@ $this->title = 'BIBLE TRIVIA NOW';
 	<?php } ?>
 	</div>
 	<div style="margin:10px;padding:10px;">
+<?php $form = ActiveForm::begin(['action'=> ['game/answer']]); ?>
 	<p>
-	  <input type="text" name="answer" /> 
+    	  <?php echo $form->field($model, 'questionId')->hiddenInput()->label(false);?>
+    	  <?php echo $form->field($model, 'userId')->hiddenInput()->label(false); ?>
+    	  <?php echo $form->field($model, 'answer') ?>
 	</p>
 	<p>
-	<input type="submit" value="Submit Answer" style="color:black; font-size:larger;"/>
+	  <?php echo  Html::submitButton('Submit Answer', ['class' => 'btn btn-primary']) ?>
 	</p>
-	</div>
-	
+	<?php ActiveForm::end() ?>
+	</div>	
     </div>
 </div>

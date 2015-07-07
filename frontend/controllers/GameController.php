@@ -10,7 +10,8 @@ use yii\filters\AccessControl;
 use \app\models\Game;
 use \app\models\GameUser;
 use \app\models\Question;
-
+use \app\models\Answer;
+use frontend\models\AnswerForm;
 
 
 /**
@@ -78,7 +79,6 @@ class GameController extends Controller
 			$game = $g;
 			break;
 		}
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
 	} else {
 	   $game = new Game();
 	   $game->score = 0;
@@ -137,21 +137,24 @@ class GameController extends Controller
 							$question .= $words[$i] . " ";
 						}
 					}
+
+					$question = trim($question);
+
 					sort($indexes);
-					$check = implode($indexes);
+					$check = implode(",", $indexes);
 					$answer = "";
 					foreach ($indexes as $i) {
-						$answer .= $words[$i] . ",";
+						$answer .= str_replace(array(",", ".", "?", "!"), "", $words[$i]) . ",";
 					}
-					$answers[] = $answer;
+					$answers[] = substr($answer, 0, strlen($answer)-1);
 					shuffle($indexes);
-					$test = implode($indexes);
+					$test = implode(",", $indexes);
 					if ($test != $check) {
 						$answer = "";
 						foreach ($indexes as $i) {
-							$answer .= $words[$i] . ",";
+							$answer .= str_replace(array(",", ".", "?", "!"), "", $words[$i]) . ",";
 						}
-						$answers[] = $answer;
+						$answers[] = substr($answer, 0, strlen($answer)-1);
 					}
 					while(count($answers) < 4) {
 						$indexes = array();
@@ -161,35 +164,47 @@ class GameController extends Controller
 								$indexes[] = $ind;
 							}
 						}
-						$test = implode($indexes);
+						$test = implode(",", $indexes);
 						if ($test != $check) {
 							$answer = "";
 							foreach ($indexes as $i) {
-								$answer .= $words[$i] . ",";
+								$answer .= str_replace(array(",", ".", "?", "!"), "", $words[$i]) . ",";
 							}
-							$answers[] = $answer;
+							$answers[] = substr($answer, 0, strlen($answer)-1);
 						}
 					}
 					$q = new Question();
 					shuffle($answers);
-					$index = 0;
+					$index = 1;
 					$answer = 0;
+					$indexes = explode(",", $check);
+					$realAnswer = "";
+					foreach($indexes as $i) {
+						$realAnswer .= str_replace(array(",", ".", "?", "!"), "", $words[$i]) . ",";
+					}
+					$realAnswer = substr($realAnswer, 0, strlen($realAnswer)-1);
+
 					foreach($answers as $a) {
-						if ($a == $check) {
+						if ($a == $realAnswer) {
 							$answer = $index;
 							break;
 						}
 						$index++;
 					}
+
 					$q->value = $question;
 					$q->answers = serialize($answers);
 					$q->answer = $answer;
 					$q->hint = "$bookName " .  $data['chapter'] . ":" . $data['verse'];
 					$q->game_id = $game->id;
 					$q->save();
+					$form = new AnswerForm();
+					$form->questionId = $q->id;
+					$form->userId = \Yii::$app->user->identity->id;
 				} else {
 					$question = $answer = "";
 					$answers = array();
+					$form = new AnswerForm();
 	                		Yii::$app->session->setFlash('error', "There was an error $book " . print_r($nodes, true));
 				}
 			} else if (is_null($nodes) || !is_array($nodes)) {
@@ -203,8 +218,7 @@ class GameController extends Controller
                 Yii::$app->session->setFlash('error', 'There was an error getting your question.');
 	}
 
-
-        return $this->render('list', array('node'=>array($book, $bookName, $chapters, $data), 'question'=>$question, 'answers'=>$answers,'bookName'=> $bookName));
+        return $this->render('list', array('node'=>array($book, $bookName, $chapters, $data), 'question'=>$question, 'answers'=>$answers,'bookName'=> $bookName, 'model'=>$form, 'hint'=>(isset($q) ? $q->hint : "")));
     }
 
     public function getVerse($bookName, $chapters) {
@@ -261,6 +275,21 @@ class GameController extends Controller
 		$obj['book'] = $bookName;
 	}
 	return $obj;
+    }
+
+    public function actionAnswer()
+    {
+	$answer = new AnswerForm();
+	if ($answer->load(Yii::$app->request->post()) && ($answerId = $answer->checkAnswer())) {
+		$answer = Answer::findOne($answerId);
+		if ($answer->correct) {
+	        	return $this->render('correct', array('answer'=>$answer, 'question'=>$answer->question));
+		} else {
+	         	return $this->render('wrong', array('answer'=>$answer, 'question'=>$answer->question));
+		}
+	} else {
+         	return $this->redirect('game/list');
+	}
     }
 
     public function actionStats()
