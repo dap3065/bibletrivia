@@ -2,7 +2,7 @@
 /* @var $this yii\web\View */
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\helppers\Url;
+use yii\helpers\Url;
 
 $this->title = 'BIBLE TRIVIA NOW';
 ?>
