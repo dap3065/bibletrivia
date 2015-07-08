@@ -1,6 +1,7 @@
 <?php
 /* @var $this yii\web\View */
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 
 
@@ -25,6 +26,6 @@ $this->title = 'BIBLE TRIVIA NOW';
 			$index++;
 		}
 	?>
- <p><?php echo Html::a("Next Question", "/game/list", array('class'=>'btn btn-default'))?></p>
+ <p><?php echo Html::a("Next Question", Url::to(["/game/list"]), array('class'=>'btn btn-default'))?></p>
   </div>
 </div>

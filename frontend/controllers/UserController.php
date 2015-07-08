@@ -103,6 +103,15 @@ class UserController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionAccount() 
+    {
+            $model = $this->findModel(\Yii::$app->user->identity->id);
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+    }
+
     /**
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

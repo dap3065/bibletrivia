@@ -95,7 +95,7 @@ class GameController extends Controller
 	   $game->save();
 	   Yii::$app->user->identity->link('games', $game);
 	}
-	$file = "/var/www/bibletrivia/booksofthebible.xml";
+	$file = "/var/lib/openshift/558c7768500446990400012e/app-root/repo/bibletrivia/booksofthebible.xml";
 	$data = "";
 	if (file_exists($file)) {
 		try {

@@ -36,7 +36,7 @@ $this->registerJs(
 	<?php } ?>
 	</div>
 	<div style="margin:10px;padding:10px;">
-<?php $form = ActiveForm::begin(['action'=> ['game/answer']]); ?>
+<?php $form = ActiveForm::begin(['id' => 'contact-form', 'action'=> ['game/answer']]); ?>
 	<p>
     	  <?php echo $form->field($model, 'questionId')->hiddenInput()->label(false);?>
     	  <?php echo $form->field($model, 'userId')->hiddenInput()->label(false); ?>
