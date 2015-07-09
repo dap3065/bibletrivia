@@ -49,6 +49,10 @@ class ContactForm extends Model
      */
     public function sendEmail($email)
     {
+        if (!\Yii::$app->user->isGuest) {
+            $this->body = "On " . date("Y-m-d H:i:s") . "\n\r From: " . \Yii::$app->user->identity->email . " \r\n" . \Yii::$app->user->identity->username . "\r\n" . $this->body;
+        }
+
         return Yii::$app->mailer->compose()
             ->setTo($email)
             ->setFrom([$this->email => $this->name])

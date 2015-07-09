@@ -27,7 +27,7 @@ $this->title = 'BIBLE TRIVIA NOW';
 			$index++;
 		}
 	?>
-	<p>Yes I know, you can't believe the phone is over already.... Have no fear, please play again!</p>
+	<p>Yes I know, you can't believe the game is over already.... Have no fear, please play again!</p>
        <p><?php echo Html::a("New Game", Url::to(["/game/list"]), array('class'=>'btn btn-default'))?></p>
   </div>
 </div>

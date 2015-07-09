@@ -27,7 +27,7 @@ class GameController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['list', 'stats', 'search', 'help'],
+                'only' => ['list', 'stats', 'search', 'help', 'download'],
                 'rules' => [
                     [
                         'actions' => ['help', 'search'],
@@ -35,7 +35,7 @@ class GameController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['list', 'stats'],
+                        'actions' => ['list', 'stats', 'download'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -69,6 +69,11 @@ class GameController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionDownload()
+    {
+        return $this->render('download');
     }
 
     public function actionList()
@@ -213,10 +218,8 @@ class GameController extends Controller
 					$form->userId = \Yii::$app->user->identity->id;
 					$form->points = 30;
 				} else {
-					$question = $answer = "";
-					$answers = array();
-					$form = new AnswerForm();
-	                		Yii::$app->session->setFlash('error', "There was an error $book " . print_r($nodes, true));
+					error_log("Ten tries still failed, redirecting");
+					$this->redirect("/game/list");
 				}
 			} else if (is_null($nodes) || !is_array($nodes)) {
                 		Yii::$app->session->setFlash('error', "There was an error $book " . print_r($nodes, true));
