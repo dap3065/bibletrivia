@@ -100,7 +100,7 @@ class GameController extends Controller
 	   $game->save();
 	   Yii::$app->user->identity->link('games', $game);
 	}
-	$file = "/var/lib/openshift/558c7768500446990400012e/app-root/repo/bibletrivia/booksofthebible.xml";
+	$file = Yii::$app->params['webRoot'] . "/booksofthebible.xml";
 	$data = "";
 	if (file_exists($file)) {
 		try {
@@ -229,7 +229,7 @@ class GameController extends Controller
                 	Yii::$app->session->setFlash('error', 'There was an error.' . print_r($ex, true));
 		}
 	} else {
-                Yii::$app->session->setFlash('error', 'There was an error getting your question.');
+                Yii::$app->session->setFlash('error', 'There was an error getting your question:' . $file . ' does not exists');
 	}
 
         return $this->render('list', array('node'=>array($book, $bookName, $chapters, $data), 'question'=>$question, 'answers'=>$answers,'bookName'=> $bookName, 'model'=>$form, 'hint'=>(isset($q) ? $q->hint : "")));
